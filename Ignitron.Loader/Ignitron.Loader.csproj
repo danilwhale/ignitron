@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>Loader</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Ignitron.Loader.API\Ignitron.Loader.API.csproj" />
+    </ItemGroup>
+    
+    <Target Name="CopyBuildOutput" AfterTargets="AfterBuild">
+        <ItemGroup>
+            <BuildFiles Include="$(OutDir)\**\*.*"/>
+        </ItemGroup>
+        <Copy SourceFiles="@(BuildFiles)" DestinationFolder="$(GameDirectory)mods\%(RecursiveDir)"/>
+    </Target>
+
+</Project>

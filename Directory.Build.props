@@ -1,0 +1,6 @@
+<Project>
+    <PropertyGroup>
+        <GameDirectory>D:\Desktop\aA\</GameDirectory>
+        <UnpackedGameDirectory>D:\Desktop\aA\unpacked\</UnpackedGameDirectory>
+    </PropertyGroup>
+</Project>
