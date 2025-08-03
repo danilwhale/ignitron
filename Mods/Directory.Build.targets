@@ -1,0 +1,28 @@
+<Project>
+    <!-- reference libraries -->
+    <ItemGroup>
+        <Reference Include="$(UnpackedGameDirectory)PocketBlocks.dll">
+            <Private>false</Private>
+        </Reference>
+        
+        <!-- loader api will be included always, there's no need to copy it -->
+        <ProjectReference Include="..\..\Ignitron.Loader.API\Ignitron.Loader.API.csproj">
+            <Private>false</Private>
+        </ProjectReference>
+    </ItemGroup>
+    
+    <!-- copy Metadata.json into the output directory -->
+    <ItemGroup>
+        <Content Include="Metadata.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    
+    <!-- copy mod directory into the Mods -->
+    <Target Name="CopyMod" AfterTargets="AfterBuild">
+        <ItemGroup>
+            <BuildFiles Include="$(OutDir)\**\*.*"/>
+        </ItemGroup>
+        <Copy SourceFiles="@(BuildFiles)" DestinationFolder="$(GameDirectory)mods\$(MSBuildProjectName)\%(RecursiveDir)"/>
+    </Target>
+</Project>

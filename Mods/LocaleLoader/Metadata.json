@@ -1,0 +1,9 @@
+{
+  "$schema": "https://github.com/danilwhale/ignitron/blob/master/Metadata.schema.json",
+  "AssemblyFile": "LocaleLoader.dll",
+  "Id": "locale_loader",
+  "Name": "Locale Loader",
+  "Author": "danilwaffle",
+  "Version": "0.0.1",
+  "Description": "Tries to load locale file from system-default language code first, otherwise falls back to default (en-AU)"
+}
