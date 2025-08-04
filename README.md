@@ -1,5 +1,21 @@
 ## ignitron
+
 modloader for [allumeria](https://unobtainablemelon.itch.io/allumeria)
+
+### installing
+
+#### download artifact
+go to [Actions tab](https://github.com/danilwhale/ignitron/actions/workflows/dotnet.yml), press on the first commit message 
+(counting from the top) with *checkmark* near it, scroll down and click on download button on the right side to download the modloader
+
+> [!IMPORTANT]
+> if you don't have GitHub account, use [nightly.link](https://nightly.link/danilwhale/ignitron/workflows/dotnet.yaml/main) instead
+
+#### actually installing
+
+make `mods` folder in the game directory, and unpack `Ignitron.Loader.zip` into it.
+
+done!
 
 ### building
 
@@ -13,9 +29,14 @@ dotnet build Ignitron.Loader/Ignitron.Loader.csproj
 
 #### configuring
 
-first of all, you need to download the game (modloader is targetted for 0.8.3, but should work with any version). after downloading, unpack the game somewhere, then install [sfextract](https://github.com/Droppers/SingleFileExtractor?tab=readme-ov-file#install) and run `sfextract PocketBlocks.exe -o unpacked` in the game directory.
+first of all, you need to download the game (modloader is targetted for 0.8.3, but should work with any version). after
+downloading, unpack the game somewhere, then
+install [sfextract](https://github.com/Droppers/SingleFileExtractor?tab=readme-ov-file#install) and run
+`sfextract PocketBlocks.exe -o unpacked` in the game directory.
 
-now, go to /Directory.Build.props, and edit `GameDirectory` and `UnpackedGameDirectory` to paths of directories with `PocketBlocks.exe` and `PocketBlocks.dll` (should be `<GAME_DIRECTORY>/unpacked`, if you followed previous step) respectively. now you're done with configuring the workspace
+now, go to /Directory.Build.props, and edit `GameDirectory` and `UnpackedGameDirectory` to paths of directories with
+`PocketBlocks.exe` and `PocketBlocks.dll` (should be `<GAME_DIRECTORY>/unpacked`, if you followed previous step)
+respectively. now you're done with configuring the workspace
 
 #### building
 
@@ -29,7 +50,8 @@ and mods should copy into your `<GAME_DIRECTORY>/mods` directory automatically.
 
 ### making new mod
 
-make sure to do [configuring](#configuring)! make a new project in `Mods/` directory, and you should automatically have game's assembly included + modloader
+make sure to do [configuring](#configuring)! make a new project in `Mods/` directory, and you should automatically have
+game's assembly included + modloader
 
 to make modloader detect your mod, make `Metadata.json` file with contents:
 
@@ -45,7 +67,8 @@ to make modloader detect your mod, make `Metadata.json` file with contents:
 }
 ```
 
-you can find more properties in the schema json! you can view [LocaleLoader's metadata file](Mods/LocaleLoader/Metadata.json) as an example.
+you can find more properties in the schema json! you can
+view [LocaleLoader's metadata file](Mods/LocaleLoader/Metadata.json) as an example.
 
 now you can make the class for your mod! create a new class and inherit `Mod` class:
 
