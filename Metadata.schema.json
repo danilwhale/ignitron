@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/danilwhale/ignitron/blob/master/Metadata.schema.json",
+  "title": "Ignitron mod metadata",
+  "description": "Describes mod made for Ignitron",
+  "type": "object",
+  "properties": {
+    "AssemblyFile": {
+      "description": "Relative path to the mod assembly file (e.g. 'ModMenu.dll')",
+      "type": "string"
+    },
+    "Id": {
+      "description": "Unique ID of the mod (e.g. 'mod_menu')",
+      "type": "string"
+    },
+    "Name": {
+      "description": "Display name of the mod (e.g. 'ModMenu')",
+      "type": "string"
+    },
+    "Author": {
+      "description": "Author/authors who worked on the mod (e.g. 'danilwaffle')",
+      "type": "string"
+    },
+    "Version": {
+      "description": "Version of the mod in 'Major.Minor.(Build).(Revision)' format (e.g. '1.0')",
+      "type": "string"
+    },
+    "Description": {
+      "description": "Description of the mod",
+      "type": "string"
+    }
+  },
+  "required": ["AssemblyFile", "Id", "Name", "Version"]
+}
