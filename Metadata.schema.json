@@ -28,7 +28,11 @@
     "Description": {
       "description": "Description of the mod",
       "type": "string"
+    },
+    "GameVersion": {
+      "description": "Version of Allumeria this mod is made for (e.g. '0.8.4', '0.8.*')",
+      "type": "string"
     }
   },
-  "required": ["AssemblyFile", "Id", "Name", "Version"]
+  "required": ["AssemblyFile", "Id", "Name", "Version", "GameVersion"]
 }

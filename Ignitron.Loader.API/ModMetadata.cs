@@ -10,4 +10,5 @@ public sealed class ModMetadata
     public string? Author { get; set; } // optional author/authors of the mod
     [JsonRequired] public Version Version { get; set; } // the version of the mod
     public string? Description { get; set; } // optional description of the mod
+    [JsonRequired] public string GameVersion { get; set; } // the version of the game the mod was made for
 }

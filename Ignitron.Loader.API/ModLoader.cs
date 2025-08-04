@@ -7,7 +7,7 @@ namespace Ignitron.Loader.API;
 // TODO: later move back into Loader project
 public static partial class ModLoader
 {
-    public static void Load(string path)
+    public static void Load(string path, Version gameVersion)
     {
         if (!Directory.Exists(path))
         {
@@ -30,7 +30,7 @@ public static partial class ModLoader
         {
             try
             {
-                ProcessModDirectory(dir);
+                ProcessModDirectory(dir, gameVersion);
             }
             catch (Exception ex)
             {
@@ -39,7 +39,7 @@ public static partial class ModLoader
         }
     }
 
-    private static void ProcessModDirectory(string path)
+    private static void ProcessModDirectory(string path, Version gameVersion)
     {
         ModMetadata? metadata =
             JsonSerializer.Deserialize<ModMetadata>(File.ReadAllText(Path.Combine(path, "Metadata.json")));
@@ -51,6 +51,13 @@ public static partial class ModLoader
         if (!MetadataIdRegex().IsMatch(metadata.Id))
         {
             throw new Exception($"Invalid mod id: '{metadata.Id}', only A-Z, 0-9 and _ are allowed");
+        }
+
+        int versionComparison = CompareGameVersions(gameVersion, metadata.GameVersion);
+        if (versionComparison != 0)
+        {
+            if (versionComparison < 0) throw new Exception($"Mod was made for older version of the game (mod: {metadata.GameVersion}, game: {gameVersion})");
+            else throw new Exception($"Mod was made for newer version of the game (mod: {metadata.GameVersion}, game: {gameVersion})");
         }
 
         string assemblyPath = Path.Combine(path, metadata.AssemblyFile);
@@ -66,6 +73,25 @@ public static partial class ModLoader
             mod!.Metadata = metadata;
             ModLibrary.Add(mod);
         }
+    }
+
+    private static int CompareGameVersions(Version installedVersion, ReadOnlySpan<char> targetVersion)
+    {
+        Span<int> components = [installedVersion.Major, installedVersion.Minor, installedVersion.Build, installedVersion.Revision];
+
+        int i = 0;
+        foreach (Range componentRange in targetVersion.Split('.'))
+        {
+            if (i >= components.Length)
+            {
+                throw new ArgumentException($"Mod's game version is formatted incorrectly: {targetVersion}. Expected MAJOR.MINOR.BUILD.REVISION!");
+            }
+
+            ReadOnlySpan<char> component = targetVersion[componentRange];
+            if (component is not ['*']) components[i++] = int.Parse(component);
+        }
+
+        return new Version(components[0], components[1], components[2], components[3]).CompareTo(installedVersion);
     }
 
     [GeneratedRegex("\\w+")]
