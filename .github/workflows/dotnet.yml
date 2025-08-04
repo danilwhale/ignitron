@@ -6,8 +6,22 @@ name: .NET
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - ".github/workflows/dotnet.yml"
+      - "Ignitron.Loader/**"
+      - "Ignitron.Loader.API/**"
+      - "Mods/**"
+      - "Directory.Build.props"
+      - "Ignitron.slnx"
   pull_request:
     branches: [ "master" ]
+    paths:
+      - ".github/workflows/dotnet.yml"
+      - "Ignitron.Loader/**"
+      - "Ignitron.Loader.API/**"
+      - "Mods/**"
+      - "Directory.Build.props"
+      - "Ignitron.slnx"
 
 jobs:
   build:
