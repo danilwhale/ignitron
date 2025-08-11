@@ -7,6 +7,8 @@ namespace Ignitron.Loader.API;
 // TODO: later move back into Loader project
 public static partial class ModLoader
 {
+    public static readonly Version Version = new(0, 0, 1);
+
     public static void Load(string path, Version gameVersion)
     {
         if (!Directory.Exists(path))

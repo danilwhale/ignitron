@@ -15,7 +15,10 @@ public class Entrypoint
         FieldInfo versionField = gameType.GetField("VERSION") ?? throw new InvalidOperationException("Couldn't find Game.VERSION field");
         string fullVersion = (string)versionField.GetValue(null)!;
         Console.WriteLine("Game version: {0}", fullVersion);
-        
+
+        // append '/ignitron {ver}' so you can identify presence of the modloader
+        versionField.SetValue(null, fullVersion + $"/ignitron {ModLoader.Version}");
+
         // get just version from full version (game stage + version)
         Version version = Version.Parse(fullVersion.AsSpan(fullVersion.IndexOfAny(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])));
         if (version.Revision < 0) version = new Version(version.Major, version.Minor, version.Build, 0);
