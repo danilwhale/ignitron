@@ -1,7 +1,7 @@
 using System.Globalization;
 using HarmonyLib;
-using PocketBlocks;
-using PocketBlocks.DataManagement.Translation;
+using Allumeria;
+using Allumeria.DataManagement.Translation;
 
 namespace LocaleLoader.Patches;
 

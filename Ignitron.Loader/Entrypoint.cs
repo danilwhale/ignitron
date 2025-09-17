@@ -10,8 +10,8 @@ public class Entrypoint
         Console.WriteLine("testicular tortion");
 
         // get version field from loaded assembly
-        Assembly gameAsm = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName != null && a.FullName.AsSpan(0, 12) is "PocketBlocks");
-        Type gameType = gameAsm.GetType("PocketBlocks.Game") ?? throw new InvalidOperationException("Couldn't find Game class");
+        Assembly gameAsm = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName != null && a.FullName.StartsWith("Allumeria"));
+        Type gameType = gameAsm.GetType("Allumeria.Game") ?? throw new InvalidOperationException("Couldn't find Game class");
         FieldInfo versionField = gameType.GetField("VERSION") ?? throw new InvalidOperationException("Couldn't find Game.VERSION field");
         string fullVersion = (string)versionField.GetValue(null)!;
         Console.WriteLine("Game version: {0}", fullVersion);
