@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/ModLibraries/">
+    <Project Path="ModLibraries/ContentAPI/ContentAPI.csproj" />
+  </Folder>
   <Folder Name="/Mods/">
     <Project Path="Mods/LocaleLoader/LocaleLoader.csproj" />
   </Folder>

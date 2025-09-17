@@ -1,0 +1,13 @@
+<Project>
+    <!-- reference libraries -->
+    <ItemGroup>
+        <Reference Include="$(UnpackedGameDirectory)PocketBlocks.dll">
+            <Private>false</Private>
+        </Reference>
+
+        <!-- loader api will be included always, there's no need to copy it -->
+        <ProjectReference Include="..\..\Ignitron.Loader.API\Ignitron.Loader.API.csproj">
+            <Private>false</Private>
+        </ProjectReference>
+    </ItemGroup>
+</Project>
