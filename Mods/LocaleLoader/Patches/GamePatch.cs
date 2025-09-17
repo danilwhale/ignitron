@@ -33,7 +33,7 @@ public static class GamePatch
         string path = Path.Combine(Directory.GetCurrentDirectory(), "res", "translations", code + ".txt");
         if (!File.Exists(path))
         {
-            Console.WriteLine("Locale Loader: Game doesn't have translation for {0}! Falling back to {1}", code, fallbackCode);
+            Logger.Warn("Locale Loader: Game doesn't have translation for {0}! Falling back to {1}");
             Translator.LoadTranslation(fallbackCode);
         }
         else Translator.LoadTranslation(code);
