@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Ignitron.Loader.API.Hacks;
 
 namespace Ignitron.Loader.API;
 
@@ -8,6 +9,7 @@ namespace Ignitron.Loader.API;
 public static partial class ModLoader
 {
     public static readonly Version Version = new(0, 0, 1);
+    public static readonly Assembly Allumeria = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName?.StartsWith("Allumeria") ?? false);
 
     public static void Load(string path, Version gameVersion)
     {
@@ -24,7 +26,7 @@ public static partial class ModLoader
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine($"Failed to retrieve directories from {path}:\n{ex}");
+            Logger.Error($"Failed to retrieve directories from {path}:\n{ex}");
             return;
         }
 
@@ -36,7 +38,7 @@ public static partial class ModLoader
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Failed to process directory {dir}:\n{ex}");
+                Logger.Error($"Failed to process directory {dir}:\n{ex}");
             }
         }
     }

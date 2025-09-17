@@ -1,5 +1,6 @@
 using System.Reflection;
 using Ignitron.Loader.API;
+using Ignitron.Loader.API.Hacks;
 
 namespace Ignitron.Loader;
 
@@ -7,17 +8,14 @@ public class Entrypoint
 {
     public static void Init()
     {
-        Console.WriteLine("testicular tortion");
+        Logger.Init("testicular tortion");
 
         // get version field from loaded assembly
-        Assembly gameAsm = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName != null && a.FullName.StartsWith("Allumeria"));
-        Type gameType = gameAsm.GetType("Allumeria.Game") ?? throw new InvalidOperationException("Couldn't find Game class");
-        FieldInfo versionField = gameType.GetField("VERSION") ?? throw new InvalidOperationException("Couldn't find Game.VERSION field");
-        string fullVersion = (string)versionField.GetValue(null)!;
-        Console.WriteLine("Game version: {0}", fullVersion);
+        string fullVersion = Game.VERSION!;
+        Logger.Init($"Game version: {fullVersion}");
 
         // append '/ignitron {ver}' so you can identify presence of the modloader
-        versionField.SetValue(null, fullVersion + $"/ignitron {ModLoader.Version}");
+        Game.VERSION = fullVersion + $"/ignitron {ModLoader.Version}";
 
         // get just version from full version (game stage + version)
         Version version = Version.Parse(fullVersion.AsSpan(fullVersion.IndexOfAny(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])));
