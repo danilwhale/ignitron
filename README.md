@@ -5,11 +5,28 @@ modloader for [allumeria](https://unobtainablemelon.itch.io/allumeria)
 ### installing
 
 #### download artifact
-go to [Actions tab](https://github.com/danilwhale/ignitron/actions/workflows/dotnet.yml), press on the first commit message 
-(counting from the top) with *checkmark* near it, scroll down and click on download button on the right side to download the modloader
+
+<details>
+    <summary>release builds (recommended)</summary>
+
+go to [Releases page](https://github.com/danilwhale/ignitron/releases/), find version that corresponds your game version
+(all releases have their target version specified in parenthesis: `0.2.0 (0.9.x)`).
+now look for `Ignitron.Loader.zip` link, under version changelog, and click on it
+
+</details>
+
+<details>
+    <summary>nightly builds</summary>
+
+go to [Actions tab](https://github.com/danilwhale/ignitron/actions/workflows/dotnet.yml), press on the first commit
+message
+(counting from the top) with *checkmark* near it, scroll down and click on download button on the right side
 
 > [!IMPORTANT]
-> if you don't have GitHub account, use [nightly.link](https://nightly.link/danilwhale/ignitron/workflows/dotnet.yaml/main) instead
+> if you don't have GitHub account,
+> use [nightly.link](https://nightly.link/danilwhale/ignitron/workflows/dotnet.yaml/main) instead
+
+</details>
 
 #### actually installing
 
