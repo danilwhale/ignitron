@@ -57,7 +57,7 @@ to make modloader detect your mod, make `Metadata.json` file with contents:
 
 ```json
 {
-  "$schema": "https://github.com/danilwhale/ignitron/blob/master/Metadata.schema.json",
+  "$schema": "https://github.com/danilwhale/ignitron/blob/34cfc19f835ff288a665b74a23d0dd6af0e8e453/Metadata.schema.json",
   "AssemblyFile": "<your_project_name>.dll",
   "Id": "<unique_mod_id>",
   "Name": "<mod_name>",
