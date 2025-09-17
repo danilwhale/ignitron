@@ -10,7 +10,6 @@ on:
       - ".github/workflows/dotnet.yml"
       - "Ignitron.Loader/**"
       - "Ignitron.Loader.API/**"
-      - "Mods/**"
       - "Directory.Build.props"
       - "Ignitron.slnx"
   pull_request:
@@ -19,7 +18,6 @@ on:
       - ".github/workflows/dotnet.yml"
       - "Ignitron.Loader/**"
       - "Ignitron.Loader.API/**"
-      - "Mods/**"
       - "Directory.Build.props"
       - "Ignitron.slnx"
 
