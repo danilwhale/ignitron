@@ -29,13 +29,13 @@ dotnet build Ignitron.Loader/Ignitron.Loader.csproj
 
 #### configuring
 
-first of all, you need to download the game (modloader is targetted for 0.8.3, but should work with any version). after
+first of all, you need to download the game (modloader is targetted for 0.9.4, but should work with any version). after
 downloading, unpack the game somewhere, then
 install [sfextract](https://github.com/Droppers/SingleFileExtractor?tab=readme-ov-file#install) and run
-`sfextract PocketBlocks.exe -o unpacked` in the game directory.
+`sfextract Allumeria.exe -o unpacked` in the game directory.
 
 now, go to /Directory.Build.props, and edit `GameDirectory` and `UnpackedGameDirectory` to paths of directories with
-`PocketBlocks.exe` and `PocketBlocks.dll` (should be `<GAME_DIRECTORY>/unpacked`, if you followed previous step)
+`Allumeria.exe` and `Allumeria.dll` (should be `<GAME_DIRECTORY>/unpacked`, if you followed previous step)
 respectively. now you're done with configuring the workspace
 
 #### building

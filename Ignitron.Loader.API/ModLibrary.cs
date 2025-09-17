@@ -1,3 +1,5 @@
+using Ignitron.Loader.API.Hacks;
+
 namespace Ignitron.Loader.API;
 
 public static class ModLibrary
@@ -27,6 +29,6 @@ public static class ModLibrary
         Loaded?.Invoke(mod);
         
         ModMetadata metadata = mod.Metadata;
-        Console.WriteLine($"Loaded {metadata.Name} (id: {metadata.Id}, version: {metadata.Version})");
+        Logger.Init($"Loaded {metadata.Name} (id: {metadata.Id}, version: {metadata.Version})");
     }
 }
