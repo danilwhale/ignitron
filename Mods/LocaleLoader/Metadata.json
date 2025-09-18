@@ -1,10 +1,15 @@
 {
-  "$schema": "https://github.com/danilwhale/ignitron/blob/34cfc19f835ff288a665b74a23d0dd6af0e8e453/Metadata.schema.json",
+  "$schema": "https://github.com/danilwhale/ignitron/raw/6fb693e31453d69ab6e1394bc284d025647a2f02/Metadata.schema.json",
   "AssemblyFile": "LocaleLoader.dll",
   "Id": "locale_loader",
   "Name": "Locale Loader",
   "Author": "danilwaffle",
   "Version": "0.0.2",
   "Description": "Tries to load locale file from system-default language code first, otherwise falls back to default (en-AU)",
-  "GameVersion": "0.9.*"
+  "Dependencies": [
+    {
+      "Id": "allumeria",
+      "Version": "0.9.*"
+    }
+  ]
 }
