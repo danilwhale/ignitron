@@ -9,13 +9,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Ignitron.Loader.API\Ignitron.Loader.API.csproj" />
+        <ProjectReference Include="..\Ignitron.Loader.API\Ignitron.Loader.API.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Lib.Harmony" Version="2.4.1" />
+        <PackageReference Include="Lib.Harmony" Version="2.4.1"/>
+
+        <!-- we will need these to include allumeria and rendering stuff -->
+        <Reference Include="$(UnpackedGameDirectory)OpenTK.Windowing.Desktop.dll" Private="false"/>
+        <Reference Include="$(UnpackedGameDirectory)OpenTK.Graphics.dll" Private="false"/>
     </ItemGroup>
-    
+
     <Target Name="CopyBuildOutput" AfterTargets="AfterBuild">
         <ItemGroup>
             <BuildFiles Include="$(OutDir)\**\*.*"/>
