@@ -9,10 +9,13 @@ namespace Ignitron.Loader.API;
 public static partial class ModLoader
 {
     public static readonly Version Version = new(0, 0, 1);
+    public static Version GameVersion { get; private set; }
     public static readonly Assembly Allumeria = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName?.StartsWith("Allumeria") ?? false);
 
     public static void Load(string path, Version gameVersion)
     {
+        GameVersion = gameVersion;
+        
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
@@ -34,16 +37,42 @@ public static partial class ModLoader
         {
             try
             {
-                ProcessModDirectory(dir, gameVersion);
+                ProcessModDirectory(dir);
             }
             catch (Exception ex)
             {
                 Logger.Error($"Failed to process directory {dir}:\n{ex}");
             }
         }
+
+        // verify dependencies for loaded mods and initialize them
+        foreach (Mod mod in ModLibrary.Mods)
+        {
+            ModMetadata metadata = mod.Metadata;
+            
+            try
+            {
+                CheckDependencies(metadata);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.ToString());
+                continue;
+            }
+
+            try
+            {
+                mod.Initialize();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Failed to initialize {metadata.Id}:\n{ex}");
+            }
+        }
     }
 
-    private static void ProcessModDirectory(string path, Version gameVersion)
+    // load mod from specified directory. this does NOT resolve dependencies! dependencies are resolved in later stage
+    private static void ProcessModDirectory(string path)
     {
         ModMetadata? metadata =
             JsonSerializer.Deserialize<ModMetadata>(File.ReadAllText(Path.Combine(path, "Metadata.json")));
@@ -55,13 +84,6 @@ public static partial class ModLoader
         if (!MetadataIdRegex().IsMatch(metadata.Id))
         {
             throw new Exception($"Invalid mod id: '{metadata.Id}', only A-Z, 0-9 and _ are allowed");
-        }
-
-        int versionComparison = CompareGameVersions(gameVersion, metadata.GameVersion);
-        if (versionComparison != 0)
-        {
-            if (versionComparison < 0) throw new Exception($"Mod was made for older version of the game (mod: {metadata.GameVersion}, game: {gameVersion})");
-            else throw new Exception($"Mod was made for newer version of the game (mod: {metadata.GameVersion}, game: {gameVersion})");
         }
 
         string assemblyPath = Path.Combine(path, metadata.AssemblyFile);
@@ -79,23 +101,27 @@ public static partial class ModLoader
         }
     }
 
-    private static int CompareGameVersions(Version installedVersion, ReadOnlySpan<char> targetVersion)
+    // check if all dependencies have been loaded for that mod. call this ONLY after all mods have been processed
+    private static void CheckDependencies(ModMetadata metadata)
     {
-        Span<int> components = [installedVersion.Major, installedVersion.Minor, installedVersion.Build, installedVersion.Revision];
-
-        int i = 0;
-        foreach (Range componentRange in targetVersion.Split('.'))
+        foreach (ModDependency dep in metadata.Dependencies)
         {
-            if (i >= components.Length)
+            Mod? depMod = ModLibrary.FirstOrDefault(dep.Id);
+            if (depMod is null)
             {
-                throw new ArgumentException($"Mod's game version is formatted incorrectly: {targetVersion}. Expected MAJOR.MINOR.BUILD.REVISION!");
+                if (!dep.Optional)
+                {
+                    throw new InvalidOperationException($"{metadata.Id} is missing dependency: {dep.Id}");
+                }
+
+                continue;
             }
 
-            ReadOnlySpan<char> component = targetVersion[componentRange];
-            if (component is not ['*']) components[i++] = int.Parse(component);
+            if (!dep.Version.Equals(depMod.Metadata.Version))
+            {
+                throw new InvalidOperationException($"{metadata.Id} requires {dep.Id} of version {dep.Version}, but got {depMod.Metadata.Version}");
+            }
         }
-
-        return new Version(components[0], components[1], components[2], components[3]).CompareTo(installedVersion);
     }
 
     [GeneratedRegex("\\w+")]

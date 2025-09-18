@@ -29,10 +29,38 @@
       "description": "Description of the mod",
       "type": "string"
     },
-    "GameVersion": {
-      "description": "Version of Allumeria this mod is made for (e.g. '0.8.4', '0.8.*')",
-      "type": "string"
+    "Dependencies": {
+      "description": "Dependencies required by the mod",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "description": "Unique ID of the dependency (e.g. 'allumeria')",
+            "type": "string"
+          },
+          "Version": {
+            "description": "Wildcard version of the dependency (e.g. '0.9.4', '0.9.*', '0.*.4', or '' for any version)",
+            "type": "string"
+          },
+          "Optional": {
+            "description": "Whether this dependency is optional or mandatory. Default value is 'false'",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "Id",
+          "Version"
+        ]
+      },
+      "uniqueItems": true
     }
   },
-  "required": ["AssemblyFile", "Id", "Name", "Version", "GameVersion"]
+  "required": [
+    "AssemblyFile",
+    "Id",
+    "Name",
+    "Version",
+    "Dependencies"
+  ]
 }

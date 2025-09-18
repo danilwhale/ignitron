@@ -5,7 +5,7 @@ namespace Ignitron.Loader.API;
 public static class ModLibrary
 {
     public static IReadOnlyList<Mod> Mods => _mods;
-    private static readonly List<Mod> _mods = [];
+    private static readonly List<Mod> _mods = [new AllumeriaMod()];
 
     public static event Action<Mod>? Loaded;
 
@@ -25,7 +25,7 @@ public static class ModLibrary
         if (_mods.Any(m => m.Metadata.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase))) return;
         
         _mods.Add(mod);
-        mod.Initialize();
+        // mod.Initialize(); don't initialize *yet*, mod may access stuff that requires its dependencies
         Loaded?.Invoke(mod);
         
         ModMetadata metadata = mod.Metadata;
