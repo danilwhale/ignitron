@@ -1,7 +1,6 @@
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using Allumeria;
 
 namespace Ignitron.Loader.API;
 
@@ -12,7 +11,7 @@ public static partial class ModLoader
     public static Version GameVersion { get; private set; }
     public static readonly Assembly Allumeria = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName?.StartsWith("Allumeria") ?? false);
 
-    public static void Load(IProgressDisplay display, string path, Version gameVersion)
+    public static void Load(IProgressDisplay display, ICrashHandler crashHandler, string path, Version gameVersion)
     {
         GameVersion = gameVersion;
 
@@ -29,7 +28,7 @@ public static partial class ModLoader
         }
         catch (Exception ex)
         {
-            Logger.Error($"Failed to retrieve directories from {path}:\n{ex}");
+            crashHandler.HandleCrash(ex, $"Failed to retrieve mods from '{path}'");
             return;
         }
 
@@ -46,7 +45,8 @@ public static partial class ModLoader
             }
             catch (Exception ex)
             {
-                Logger.Error($"Failed to process directory {dir}:\n{ex}");
+                crashHandler.HandleCrash(ex, $"Failed to process mod directory '{dir}'");
+                return;
             }
         }
 
@@ -65,8 +65,8 @@ public static partial class ModLoader
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.ToString());
-                continue;
+                crashHandler.HandleCrash(ex, null);
+                return;
             }
 
             try
@@ -75,7 +75,8 @@ public static partial class ModLoader
             }
             catch (Exception ex)
             {
-                Logger.Error($"Failed to initialize {metadata.Id}:\n{ex}");
+                crashHandler.HandleCrash(ex, $"Failed to initialize '{metadata.Id}'");
+                return;
             }
         }
     }

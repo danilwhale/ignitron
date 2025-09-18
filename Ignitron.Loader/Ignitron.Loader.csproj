@@ -18,6 +18,7 @@
         <!-- we will need these to include allumeria and rendering stuff -->
         <Reference Include="$(UnpackedGameDirectory)OpenTK.Windowing.Desktop.dll" Private="false"/>
         <Reference Include="$(UnpackedGameDirectory)OpenTK.Graphics.dll" Private="false"/>
+        <Reference Include="$(UnpackedGameDirectory)OpenTK.Mathematics.dll" Private="false"/>
     </ItemGroup>
 
     <Target Name="CopyBuildOutput" AfterTargets="AfterBuild">
