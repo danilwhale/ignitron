@@ -3,4 +3,16 @@
         <GameDirectory>D:\Desktop\aA\</GameDirectory>
         <UnpackedGameDirectory>D:\Desktop\aA\unpacked\</UnpackedGameDirectory>
     </PropertyGroup>
+
+    <!-- reference libraries -->
+    <ItemGroup>
+        <Reference Include="$(UnpackedGameDirectory)Allumeria.dll">
+            <Private>false</Private>
+        </Reference>
+
+        <!-- loader api will be included always, there's no need to copy it -->
+        <ProjectReference Include="..\..\Ignitron.Loader.API\Ignitron.Loader.API.csproj">
+            <Private>false</Private>
+        </ProjectReference>
+    </ItemGroup>
 </Project>

@@ -1,14 +1,14 @@
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using Ignitron.Loader.API.Hacks;
+using Allumeria;
 
 namespace Ignitron.Loader.API;
 
 // TODO: later move back into Loader project
 public static partial class ModLoader
 {
-    public static readonly Version Version = new(0, 0, 1);
+    public static readonly Version Version = new(0, 3, 0);
     public static Version GameVersion { get; private set; }
     public static readonly Assembly Allumeria = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName?.StartsWith("Allumeria") ?? false);
 

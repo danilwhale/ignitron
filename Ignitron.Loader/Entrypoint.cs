@@ -1,7 +1,7 @@
+using Allumeria;
 using System.Reflection;
 using HarmonyLib;
 using Ignitron.Loader.API;
-using Ignitron.Loader.API.Hacks;
 
 namespace Ignitron.Loader;
 

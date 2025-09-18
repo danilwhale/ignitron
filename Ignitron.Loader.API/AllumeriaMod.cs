@@ -1,5 +1,3 @@
-using Ignitron.Loader.API.Hacks;
-
 namespace Ignitron.Loader.API;
 
 internal sealed class AllumeriaMod : Mod
