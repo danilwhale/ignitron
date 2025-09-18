@@ -12,10 +12,10 @@ public static partial class ModLoader
     public static Version GameVersion { get; private set; }
     public static readonly Assembly Allumeria = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName?.StartsWith("Allumeria") ?? false);
 
-    public static void Load(string path, Version gameVersion)
+    public static void Load(IProgressDisplay display, string path, Version gameVersion)
     {
         GameVersion = gameVersion;
-        
+
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
@@ -33,8 +33,13 @@ public static partial class ModLoader
             return;
         }
 
-        foreach (string dir in dirs)
+        display.UpdateCategory("Processing mod directories");
+        for (int i = 0; i < dirs.Length; i++)
         {
+            string dir = dirs[i];
+
+            display.UpdateMessage($"{i + 1}/{dirs.Length}");
+
             try
             {
                 ProcessModDirectory(dir);
@@ -46,10 +51,14 @@ public static partial class ModLoader
         }
 
         // verify dependencies for loaded mods and initialize them
-        foreach (Mod mod in ModLibrary.Mods)
+        display.UpdateCategory("Initializing mods");
+        for (int i = 0; i < ModLibrary.Count; i++)
         {
+            Mod mod = ModLibrary.Mods[i];
             ModMetadata metadata = mod.Metadata;
-            
+
+            display.UpdateMessage($"{metadata.Name} ({i + 1}/{ModLibrary.Count})");
+
             try
             {
                 CheckDependencies(metadata);
