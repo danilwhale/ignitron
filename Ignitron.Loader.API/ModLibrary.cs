@@ -31,6 +31,6 @@ public static class ModLibrary
         Loaded?.Invoke(mod);
 
         ModMetadata metadata = mod.Metadata;
-        Logger.Init($"Loaded {metadata.Name} (id: {metadata.Id}, version: {metadata.Version})");
+        Logger.Init($"Loaded '{metadata.Name}' (id: '{metadata.Id}', version: {metadata.Version})");
     }
 }

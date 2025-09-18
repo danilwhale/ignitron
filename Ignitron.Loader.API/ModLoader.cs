@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Allumeria;
 
 namespace Ignitron.Loader.API;
 
@@ -28,7 +29,9 @@ public static partial class ModLoader
         }
         catch (Exception ex)
         {
-            crashHandler.HandleCrash(ex, $"Failed to retrieve mods from '{path}'");
+            string message = $"Failed to retrieve mods from '{path}'";
+            Logger.Error($"{message}:\n{ex}");
+            crashHandler.HandleCrash(ex, message);
             return;
         }
 
@@ -37,6 +40,7 @@ public static partial class ModLoader
         {
             string dir = dirs[i];
 
+            Logger.Init($"Processing '{dir}'... {i + 1}/{dirs.Length}");
             display.UpdateMessage($"{i + 1}/{dirs.Length}");
 
             try
@@ -45,7 +49,9 @@ public static partial class ModLoader
             }
             catch (Exception ex)
             {
-                crashHandler.HandleCrash(ex, $"Failed to process mod directory '{dir}'");
+                string message = $"Failed to process mod directory '{dir}'";
+                Logger.Error($"{message}:\n{ex}");
+                crashHandler.HandleCrash(ex, message);
                 return;
             }
         }
@@ -57,6 +63,7 @@ public static partial class ModLoader
             Mod mod = ModLibrary.Mods[i];
             ModMetadata metadata = mod.Metadata;
 
+            Logger.Init($"Initializing '{metadata.Name}'... {i + 1}/{ModLibrary.Count} mods");
             display.UpdateMessage($"{metadata.Name} ({i + 1}/{ModLibrary.Count})");
 
             try
@@ -65,6 +72,7 @@ public static partial class ModLoader
             }
             catch (Exception ex)
             {
+                Logger.Error(ex.ToString());
                 crashHandler.HandleCrash(ex, null);
                 return;
             }
@@ -75,7 +83,9 @@ public static partial class ModLoader
             }
             catch (Exception ex)
             {
-                crashHandler.HandleCrash(ex, $"Failed to initialize '{metadata.Id}'");
+                string message = $"Failed to initialize '{metadata.Id}'";
+                Logger.Error($"{message}:\n{ex}");
+                crashHandler.HandleCrash(ex, message);
                 return;
             }
         }
