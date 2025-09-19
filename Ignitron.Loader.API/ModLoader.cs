@@ -29,9 +29,7 @@ public static partial class ModLoader
         }
         catch (Exception ex)
         {
-            string message = $"Failed to retrieve mods from '{path}'";
-            Logger.Error($"{message}:\n{ex}");
-            crashHandler.HandleCrash(ex, message);
+            ReportCrash(crashHandler, ex, $"Failed to retrieve mods from '{path}'");
             return;
         }
 
@@ -49,9 +47,7 @@ public static partial class ModLoader
             }
             catch (Exception ex)
             {
-                string message = $"Failed to process mod directory '{dir}'";
-                Logger.Error($"{message}:\n{ex}");
-                crashHandler.HandleCrash(ex, message);
+                ReportCrash(crashHandler, ex,  $"Failed to process mod directory '{dir}'");
                 return;
             }
         }
@@ -72,8 +68,7 @@ public static partial class ModLoader
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.ToString());
-                crashHandler.HandleCrash(ex, null);
+                ReportCrash(crashHandler, ex, null);
                 return;
             }
 
@@ -83,12 +78,30 @@ public static partial class ModLoader
             }
             catch (Exception ex)
             {
-                string message = $"Failed to initialize '{metadata.Id}'";
-                Logger.Error($"{message}:\n{ex}");
-                crashHandler.HandleCrash(ex, message);
+                ReportCrash(crashHandler, ex, $"Failed to initialize '{metadata.Id}'");
                 return;
             }
         }
+    }
+
+    private static void ReportCrash(ICrashHandler handler, Exception ex, string? state)
+    {
+        Logger.Error("Ignitron has crashed!!!");
+        if (state is not null) Logger.Error($"-- {state}:");
+        Logger.Error(ex.ToString());
+
+        // 1 mod (game) is always present
+        if (ModLibrary.Count > 1)
+        {
+            Logger.Error("Installed mods:");
+            foreach (Mod mod in ModLibrary.Mods)
+            {
+                ModMetadata metadata = mod.Metadata;
+                Logger.Error($"- {metadata.Name} ({metadata.Id}) {metadata.Version}");
+            }
+        }
+        
+        handler.HandleCrash(ex, state);
     }
 
     // load mod from specified directory. this does NOT resolve dependencies! dependencies are resolved in later stage
