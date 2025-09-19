@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Allumeria;
@@ -47,7 +48,7 @@ public static partial class ModLoader
             }
             catch (Exception ex)
             {
-                ReportCrash(crashHandler, ex,  $"Failed to process mod directory '{dir}'");
+                ReportCrash(crashHandler, ex, $"Failed to process mod directory '{dir}'");
                 return;
             }
         }
@@ -86,21 +87,25 @@ public static partial class ModLoader
 
     private static void ReportCrash(ICrashHandler handler, Exception ex, string? state)
     {
-        Logger.Error("Ignitron has crashed!!!");
-        if (state is not null) Logger.Error($"-- {state}:");
-        Logger.Error(ex.ToString());
+        StringBuilder sb = new();
+        sb.AppendLine("Ignitron has crashed!!!");
+        if (state is not null) sb.AppendLine($"-- {state}:");
+        sb.AppendLine(ex.ToString());
 
         // 1 mod (game) is always present
         if (ModLibrary.Count > 1)
         {
-            Logger.Error("Installed mods:");
+            sb.AppendLine("Installed mods:");
             foreach (Mod mod in ModLibrary.Mods)
             {
                 ModMetadata metadata = mod.Metadata;
-                Logger.Error($"- {metadata.Name} ({metadata.Id}) {metadata.Version}");
+                sb.AppendLine($"- {metadata.Name} ({metadata.Id}) {metadata.Version}");
             }
         }
-        
+
+        string report = sb.ToString();
+        Logger.Error(report);
+        Logger.CrashReport(report);
         handler.HandleCrash(ex, state);
     }
 
