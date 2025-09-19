@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -88,25 +89,46 @@ public static partial class ModLoader
     private static void ReportCrash(ICrashHandler handler, Exception ex, string? state)
     {
         StringBuilder sb = new();
-        sb.AppendLine("Ignitron has crashed!!!");
+        sb
+            .AppendLine("Ignitron has failed to load!!!")
+            .AppendLine();
+        
+        // report some info about game install
+        sb
+            .AppendLine("-- Game")
+            .AppendLine($"Allumeria: {Game.VERSION}")
+            .AppendLine($"Ignitron: {Version}")
+            .AppendLine();
+        
+        // report some runtime info
+        sb
+            .AppendLine("-- Runtime")
+            .AppendLine($".NET: {RuntimeEnvironment.GetSystemVersion()}")
+            .AppendLine($"OS: {Environment.OSVersion}")
+            .AppendLine();
+        
         if (state is not null) sb.AppendLine($"-- {state}:");
         sb.AppendLine(ex.ToString());
 
         // 1 mod (game) is always present
+        // report installed mods
         if (ModLibrary.Count > 1)
         {
-            sb.AppendLine("Installed mods:");
+            sb
+                .AppendLine()
+                .AppendLine("-- Mods");
             foreach (Mod mod in ModLibrary.Mods)
             {
                 ModMetadata metadata = mod.Metadata;
-                sb.AppendLine($"- {metadata.Name} ({metadata.Id}) {metadata.Version}");
+                sb.AppendLine($" + {metadata.Name} ({metadata.Id}): {metadata.Version}");
             }
         }
 
+        // write report everywhere
         string report = sb.ToString();
         Logger.Error(report);
         Logger.CrashReport(report);
-        handler.HandleCrash(ex, state);
+        handler.HandleCrash(ex, state, report);
     }
 
     // load mod from specified directory. this does NOT resolve dependencies! dependencies are resolved in later stage

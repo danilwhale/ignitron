@@ -48,10 +48,8 @@ public class Entrypoint
         public bool Crashed;
 
         private UIPanel panel_main = null!;
-        private UIScrollPanel panel_infoScroll = null!;
-        private UIVerticalList list_info = null!;
-        private UIText text_title = null!;
-        private UIText text_description = null!;
+        private UIScrollPanel panel_reportScroll = null!;
+        private UIText text_report = null!;
         private UIHorizontalList list_buttons = null!;
         private UIButton btn_copy = null!;
         private UIButton btn_mods = null!;
@@ -67,11 +65,9 @@ public class Entrypoint
                 textureX = 16,
                 textureY = 48
             });
-            panel_infoScroll = (UIScrollPanel)panel_main.RegisterNode(new UIScrollPanel("list_info"));
-            list_info = (UIVerticalList)panel_infoScroll.RegisterNode(new UIVerticalList("list_info"));
-            panel_infoScroll.SetMainNode(list_info);
-            text_title = (UIText)list_info.RegisterNode(new UIText("text_title", "Ignitron has failed to load!!!"));
-            text_description = (UIText)list_info.RegisterNode(new UIText("text_description", "!!!"));
+            panel_reportScroll = (UIScrollPanel)panel_main.RegisterNode(new UIScrollPanel("list_info"));
+            text_report = (UIText)panel_reportScroll.RegisterNode(new UIText("text_report", "awa"));
+            panel_reportScroll.SetMainNode(text_report);
             list_buttons = (UIHorizontalList)panel_main.RegisterNode(new UIHorizontalList("list_buttons")
             {
                 padding = 0,
@@ -86,8 +82,8 @@ public class Entrypoint
         {
             panel_main.SetSize(16, 16, UIManager.scaledWidth - 32, UIManager.scaledHeight - 32);
             list_buttons.SetSize(panel_main.x + 12, panel_main.y + panel_main.h - 36, 188, 24 * UIManager.scale);
-            list_info.SetSize(panel_main.x + 12, panel_main.y + 12, panel_main.w - 24, panel_main.y + panel_main.h - 24 - list_buttons.h);
-            panel_infoScroll.SetSize(list_info.x, list_info.y, list_info.w, list_info.h);
+            text_report.SetSize(panel_main.x + 12, panel_main.y + 12, panel_main.w - 24, text_report.h);
+            panel_reportScroll.SetSize(text_report.x, text_report.y, text_report.w, panel_main.h - list_buttons.h - 24);
             base.Layout();
         }
 
@@ -99,7 +95,7 @@ public class Entrypoint
             {
                 unsafe
                 {
-                    GLFW.SetClipboardString(game.WindowPtr, text_description.displayText);
+                    GLFW.SetClipboardString(game.WindowPtr, text_report.displayText);
                 }
             }
             else if (btn_mods.WasActivatedPrimary())
@@ -114,9 +110,9 @@ public class Entrypoint
             panel_main.show = show;
         }
 
-        public void HandleCrash(Exception exception, string? message)
+        public void HandleCrash(Exception exception, string? message, string report)
         {
-            text_description.displayText = message is not null ? $"-- {message}:\n{exception}" : exception.ToString();
+            text_report.displayText = report;
             Crashed = true;
         }
     }

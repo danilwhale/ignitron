@@ -2,5 +2,5 @@ namespace Ignitron.Loader.API;
 
 public interface ICrashHandler
 {
-    void HandleCrash(Exception exception, string? message);
+    void HandleCrash(Exception exception, string? message, string report);
 }
