@@ -18,12 +18,22 @@ done!
 
 ### for developers
 
+> [!CAUTION]
+> as of 0.9.4, you can ***NOT*** use Harmony patches or MonoMod in production environment.
+> see https://github.com/MonoMod/MonoMod/issues/129 for more information.
+> hopefully, this will be resolved in steam playtest release.
+>
+> as a workaround, you can do [configuration](#configuring) steps and run the game using `dotnet unpacked/Allumeria.dll`
+
 #### configuring
 
 first of all, you need to download the game (modloader is targetted for 0.9.4, but should work with any version after
 0.9). after downloading, unpack the game somewhere, then
 install [sfextract](https://github.com/Droppers/SingleFileExtractor?tab=readme-ov-file#install) and run
 `sfextract Allumeria.exe -o unpacked` in the game directory.
+
+> [!IMPORTANT]
+> you won't be able to run the game as is. you need to edit `Allumeria.runtimeconfig.json` a bit: replace `includedFrameworks` with `frameworks`; also set environment variable `DOTNET_READYTORUN` to `0`.
 
 now, go to `/Directory.Build.props`, and edit `GameDirectory` and `UnpackedGameDirectory` to paths of directories with
 `Allumeria.exe` and `Allumeria.dll` (should be `<GAME_DIRECTORY>/unpacked`, if you followed previous step)
