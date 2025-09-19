@@ -45,6 +45,8 @@ public class Entrypoint
 
     private sealed class GraphicalCrashHandler(Game game) : MenuController, ICrashHandler
     {
+        public bool Crashed;
+
         private UIPanel panel_main = null!;
         private UIScrollPanel panel_infoScroll = null!;
         private UIVerticalList list_info = null!;
@@ -108,29 +110,20 @@ public class Entrypoint
             {
                 Environment.Exit(0);
             }
-            
+
             panel_main.show = show;
         }
 
         public void HandleCrash(Exception exception, string? message)
         {
-            // hide all menus
-            foreach (MenuController controller in Game.uiManager.menuControllers)
-            {
-                controller.show = false;
-            }
-
             text_description.displayText = message is not null ? $"-- {message}:\n{exception}" : exception.ToString();
-            show = true;
+            Crashed = true;
         }
     }
 
     [HarmonyPatch(typeof(Game), "SetupGame")]
     private static class GameSetupPatch
     {
-        private static GraphicalProgressDisplay _progressDisplay;
-        private static GraphicalCrashHandler _crashHandler;
-
         public static void Postfix(Game __instance, ref bool ___threadedLoadDone)
         {
             Logger.Init("not yet");
@@ -162,6 +155,31 @@ public class Entrypoint
             ___threadedLoadDone = true;
         }
     }
+
+    [HarmonyPatch(typeof(Game), "OnUpdateFrame")]
+    private static class GameUpdatePatch
+    {
+        private static bool _wasThreadedLoadDone;
+
+        public static void Prefix(bool ___threadedLoadDone)
+        {
+            // hide all menus
+            if (_crashHandler is { Crashed: true } && !_wasThreadedLoadDone && ___threadedLoadDone)
+            {
+                foreach (MenuController controller in Game.uiManager.menuControllers)
+                {
+                    controller.show = false;
+                }
+
+                _crashHandler.show = true;
+            }
+
+            _wasThreadedLoadDone = ___threadedLoadDone;
+        }
+    }
+
+    private static GraphicalProgressDisplay _progressDisplay;
+    private static GraphicalCrashHandler _crashHandler;
 
     public static void Init()
     {
