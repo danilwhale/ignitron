@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <AssemblyName>Loader</AssemblyName>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,6 +20,7 @@
         <Reference Include="$(UnpackedGameDirectory)OpenTK.Windowing.Desktop.dll" Private="false"/>
         <Reference Include="$(UnpackedGameDirectory)OpenTK.Graphics.dll" Private="false"/>
         <Reference Include="$(UnpackedGameDirectory)OpenTK.Mathematics.dll" Private="false"/>
+        <Reference Include="$(UnpackedGameDirectory)OpenTK.Windowing.GraphicsLibraryFramework.dll" Private="false"/>
     </ItemGroup>
 
     <Target Name="CopyBuildOutput" AfterTargets="AfterBuild">

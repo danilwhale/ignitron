@@ -7,6 +7,7 @@ using Allumeria.UI.UINodes;
 using HarmonyLib;
 using Ignitron.Loader.API;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Ignitron.Loader;
 
@@ -50,6 +51,7 @@ public class Entrypoint
         private UIText text_title = null!;
         private UIText text_description = null!;
         private UIHorizontalList list_buttons = null!;
+        private UIButton btn_copy = null!;
         private UIButton btn_mods = null!;
         private UIButton btn_quit = null!;
 
@@ -73,6 +75,7 @@ public class Entrypoint
                 padding = 0,
                 spacing = 4
             });
+            btn_copy = (UIButton)list_buttons.RegisterNode(new UIButton("btn_copy", 0, 0, 60, 24, "Copy"));
             btn_mods = (UIButton)list_buttons.RegisterNode(new UIButton("btn_mods", 0, 0, 60, 24, "Mods..."));
             btn_quit = (UIButton)list_buttons.RegisterNode(new UIButton("btn_quit", 0, 0, 60, 24, "Quit"));
         }
@@ -80,7 +83,7 @@ public class Entrypoint
         public override void Layout()
         {
             panel_main.SetSize(16, 16, UIManager.scaledWidth - 32, UIManager.scaledHeight - 32);
-            list_buttons.SetSize(panel_main.x + 12, panel_main.y + panel_main.h - 36, 128, 24 * UIManager.scale);
+            list_buttons.SetSize(panel_main.x + 12, panel_main.y + panel_main.h - 36, 188, 24 * UIManager.scale);
             list_info.SetSize(panel_main.x + 12, panel_main.y + 12, panel_main.w - 24, panel_main.y + panel_main.h - 24 - list_buttons.h);
             panel_infoScroll.SetSize(list_info.x, list_info.y, list_info.w, list_info.h);
             base.Layout();
@@ -90,7 +93,14 @@ public class Entrypoint
         {
             base.Update();
 
-            if (btn_mods.WasActivatedPrimary())
+            if (btn_copy.WasActivatedPrimary())
+            {
+                unsafe
+                {
+                    GLFW.SetClipboardString(game.WindowPtr, text_description.displayText);
+                }
+            }
+            else if (btn_mods.WasActivatedPrimary())
             {
                 Game.OpenLink(Path.Combine(Directory.GetCurrentDirectory(), "mods"));
             }
