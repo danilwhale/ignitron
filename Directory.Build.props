@@ -1,8 +1,8 @@
 <Project>
-    <!-- IMPORTANT: change these if you're going to build or work on this !! -->
+    <!-- IMPORTANT: uncomment and change these if you're going to build or work on this !! -->
     <PropertyGroup>
-        <GameDirectory>D:\Desktop\aA\</GameDirectory>
-        <UnpackedGameDirectory>D:\Desktop\aA\unpacked\</UnpackedGameDirectory>
+        <!-- <GameDirectory>[GAME_DIR]</GameDirectory> -->
+        <!-- <UnpackedGameDirectory>[UNPACKED_GAME_DIR]</UnpackedGameDirectory> -->
     </PropertyGroup>
 
     <Import Project="$(MSBuildThisFileDirectory)build\CommonAssemblies.props"/>
