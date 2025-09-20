@@ -10,6 +10,8 @@ namespace Ignitron.Loader.API;
 // TODO: later move back into Loader project
 public static partial class ModLoader
 {
+    private const string BootStage = "boot";
+
     public static readonly Version Version = new(0, 3, 0);
     public static Version GameVersion { get; private set; }
     public static readonly Assembly Allumeria = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName?.StartsWith("Allumeria") ?? false);
@@ -31,7 +33,7 @@ public static partial class ModLoader
         }
         catch (Exception ex)
         {
-            ReportCrash(crashHandler, ex, $"Failed to retrieve mods from '{path}'");
+            ReportCrash(crashHandler, ex, BootStage, $"Failed to retrieve mods from '{path}'");
             return;
         }
 
@@ -49,7 +51,7 @@ public static partial class ModLoader
             }
             catch (Exception ex)
             {
-                ReportCrash(crashHandler, ex, $"Failed to process mod directory '{dir}'");
+                ReportCrash(crashHandler, ex, BootStage, $"Failed to process mod directory '{dir}'");
                 return;
             }
         }
@@ -70,7 +72,7 @@ public static partial class ModLoader
             }
             catch (Exception ex)
             {
-                ReportCrash(crashHandler, ex, null);
+                ReportCrash(crashHandler, ex, BootStage, null);
                 return;
             }
 
@@ -80,33 +82,34 @@ public static partial class ModLoader
             }
             catch (Exception ex)
             {
-                ReportCrash(crashHandler, ex, $"Failed to initialize '{metadata.Id}'");
+                ReportCrash(crashHandler, ex, BootStage, $"Failed to initialize '{metadata.Id}'");
                 return;
             }
         }
     }
 
-    private static void ReportCrash(ICrashHandler handler, Exception ex, string? state)
+    public static void ReportCrash(ICrashHandler handler, Exception ex, string stage, string? state)
     {
         StringBuilder sb = new();
         sb
-            .AppendLine("Ignitron has failed to load!!!")
+            .AppendLine("Allumeria has crashed!!!")
+            .AppendLine($"The catastrophe has happened during {stage}")
             .AppendLine();
-        
+
         // report some info about game install
         sb
             .AppendLine("-- Game")
             .AppendLine($"Allumeria: {Game.VERSION}")
             .AppendLine($"Ignitron: {Version}")
             .AppendLine();
-        
+
         // report some runtime info
         sb
             .AppendLine("-- Runtime")
             .AppendLine($".NET: {RuntimeEnvironment.GetSystemVersion()}")
             .AppendLine($"OS: {Environment.OSVersion}")
             .AppendLine();
-        
+
         if (state is not null) sb.AppendLine($"-- {state}:");
         sb.AppendLine(ex.ToString());
 

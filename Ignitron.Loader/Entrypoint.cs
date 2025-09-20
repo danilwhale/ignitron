@@ -174,12 +174,23 @@ public class Entrypoint
         }
     }
 
+    private const string GameStage = "game";
+
     private static GraphicalProgressDisplay _progressDisplay;
     private static GraphicalCrashHandler _crashHandler;
 
     public static void Init()
     {
+        // attach exception handler
+        AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
+
+        Harmony.DEBUG = true;
         Harmony harmony = new("danilwaffle.Ignitron.Loader");
         harmony.PatchAll();
+    }
+
+    private static void HandleUnhandledException(object sender, UnhandledExceptionEventArgs args)
+    {
+        ModLoader.ReportCrash(_crashHandler, (Exception)args.ExceptionObject, GameStage, null);
     }
 }
