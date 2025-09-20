@@ -35,7 +35,7 @@ install [sfextract](https://github.com/Droppers/SingleFileExtractor?tab=readme-o
 > [!IMPORTANT]
 > you won't be able to run the game as is. you need to edit `Allumeria.runtimeconfig.json` a bit: replace `includedFrameworks` with `frameworks`; also set environment variable `DOTNET_READYTORUN` to `0`.
 
-now, go to `/Directory.Build.props`, and edit `GameDirectory` and `UnpackedGameDirectory` to paths of directories with
+now, go to `/Directory.Build.props`, uncomment and edit `GameDirectory` and `UnpackedGameDirectory` to paths of directories with
 `Allumeria.exe` and `Allumeria.dll` (should be `<GAME_DIRECTORY>/unpacked`, if you followed previous step)
 respectively. now you're done with configuring the workspace
 
