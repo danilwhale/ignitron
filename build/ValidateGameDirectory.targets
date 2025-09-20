@@ -1,0 +1,19 @@
+<Project InitialTargets="ValidateGameDirectory">
+    <Target Name="ValidateGameDirectory">
+        <!-- validate GameDirectory property -->
+        <Error
+                Text="Game directory hasn't been specified! Specify it using '&lt;GameDirectory&gt;[GAME_DIR]&lt;/GameDirectory&gt;' in PropertyGroup of your project."
+                Condition="'$(GameDirectory)' == ''"/>
+        <Error
+                Text="Specified game directory doesn't exist: '$(GameDirectory)'!"
+                Condition="!Exists($(GameDirectory))"/>
+
+        <!-- validate UnpackedGameDirectory property -->
+        <Error
+                Text="Directory with unpacked game assemblies hasn't been specified! Specify it using '&lt;UnpackedGameDirectory&gt;[UNPACKED_GAME_DIR]&lt;/UnpackedGameDirectory&gt;' in PropertyGroup of your project."
+                Condition="'$(UnpackedGameDirectory)' == ''"/>
+        <Error
+                Text="Specified directory with unpacked game assemblies doesn't exist: '$(UnpackedGameDirectory)'!"
+                Condition="!Exists($(UnpackedGameDirectory))"/>
+    </Target>
+</Project>

@@ -1,0 +1,35 @@
+<Project>
+    <Import Project="$(MSBuildThisFileDirectory)ValidateGameDirectory.targets"/>
+
+    <ItemGroup>
+        <!-- obvious reference -->
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'Allumeria.dll'))" Private="false"/>
+
+        <!-- game dependencies -->
+        <!-- fastnoise -->
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'FastNoise.dll'))" Private="false"/>
+
+        <!-- opentk -->
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'OpenTK.Audio.OpenAL.dll'))" Private="false"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'OpenTK.Compute.dll'))" Private="false"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'OpenTK.Core.dll'))" Private="false"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'OpenTK.Graphics.dll'))" Private="false"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'OpenTK.Input.dll'))" Private="false"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'OpenTK.Mathematics.dll'))" Private="false"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'OpenTK.Windowing.Common.dll'))" Private="false"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'OpenTK.Windowing.Desktop.dll'))" Private="false"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'OpenTK.Windowing.GraphicsLibraryFramework.dll'))" Private="false"/>
+
+        <!-- soloud -->
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'SoLoudLib.dll'))"/>
+
+        <!-- sql -->
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'SQLitePCLRaw.batteries_v2.dll'))"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'SQLitePCLRaw.core.dll'))"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'SQLitePCLRaw.provider.e_sqlite3.dll'))"/>
+
+        <!-- stb_image -->
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'StbImageSharp.dll'))"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'StbImageWriteSharp.dll'))"/>
+    </ItemGroup>
+</Project>

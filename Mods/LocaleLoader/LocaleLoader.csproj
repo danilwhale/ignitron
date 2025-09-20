@@ -9,10 +9,6 @@
 
     <ItemGroup>
         <PackageReference Include="Lib.Harmony" Version="2.3.5"/>
-
-        <Reference Include="$(UnpackedGameDirectory)OpenTK.Windowing.Desktop.dll">
-            <Private>false</Private>
-        </Reference>
     </ItemGroup>
 
 </Project>

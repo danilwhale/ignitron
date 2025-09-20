@@ -1,13 +1,9 @@
 <Project>
+    <!-- IMPORTANT: change these if you're going to build or work on this !! -->
     <PropertyGroup>
         <GameDirectory>D:\Desktop\aA\</GameDirectory>
         <UnpackedGameDirectory>D:\Desktop\aA\unpacked\</UnpackedGameDirectory>
     </PropertyGroup>
 
-    <!-- reference libraries -->
-    <ItemGroup>
-        <Reference Include="$(UnpackedGameDirectory)Allumeria.dll">
-            <Private>false</Private>
-        </Reference>
-    </ItemGroup>
+    <Import Project="$(MSBuildThisFileDirectory)build\CommonAssemblies.props"/>
 </Project>

@@ -1,0 +1,27 @@
+<Project>
+    <Import Project="$(MSBuildThisFileDirectory)CommonAssemblies.props"/>
+    
+    <!-- copy Metadata.json into the output directory -->
+    <ItemGroup>
+        <Content Include="Metadata.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <!-- reference common stuff -->
+    <ItemGroup>
+        <ProjectReference Include="$(MSBuildThisFileDirectory)..\Ignitron.Loader.API\Ignitron.Loader.API.csproj" Private="false"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <CopyToGameDirectory>false</CopyToGameDirectory>
+    </PropertyGroup>
+
+    <!-- copy mod directory into the Mods. requires 'CopyToGameDirectory' to be set to 'true' -->
+    <Target Name="CopyMod" AfterTargets="AfterBuild" Condition="$(CopyToGameDirectory)">
+        <ItemGroup>
+            <BuildFiles Include="$(OutDir)\**\*.*"/>
+        </ItemGroup>
+        <Copy SourceFiles="@(BuildFiles)" DestinationFolder="$([System.IO.Path]::Combine('$(GameDirectory)', 'mods', '$(MSBuildProjectName)', '%(RecursiveDir)'))"/>
+    </Target>
+</Project>
