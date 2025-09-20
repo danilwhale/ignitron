@@ -4,6 +4,4 @@
         <!-- <GameDirectory>[GAME_DIR]</GameDirectory> -->
         <!-- <UnpackedGameDirectory>[UNPACKED_GAME_DIR]</UnpackedGameDirectory> -->
     </PropertyGroup>
-
-    <Import Project="$(MSBuildThisFileDirectory)build\CommonAssemblies.props"/>
 </Project>

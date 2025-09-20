@@ -7,6 +7,8 @@
         <AssemblyName>Loader</AssemblyName>
     </PropertyGroup>
 
+    <Import Project="$(MSBuildThisFileDirectory)..\build\CommonAssemblies.props"/>
+
     <ItemGroup>
         <ProjectReference Include="..\Ignitron.Loader.API\Ignitron.Loader.API.csproj"/>
     </ItemGroup>
