@@ -8,14 +8,13 @@ namespace Ignitron.Loader.API;
 // TODO: later move back into Loader project
 public static partial class ModLoader
 {
-    public static readonly Version Version = new(0, 3, 0);
-    public static Version GameVersion { get; private set; }
-    public static readonly Assembly Allumeria = AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName?.StartsWith("Allumeria") ?? false);
+    public static Version Version { get; } = new(0, 3, 0);
+    public static Version GameVersion { get; private set; } = new();
 
     public static void Load(string path, Version gameVersion)
     {
         GameVersion = gameVersion;
-        
+
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
@@ -49,7 +48,7 @@ public static partial class ModLoader
         foreach (Mod mod in ModLibrary.Mods)
         {
             ModMetadata metadata = mod.Metadata;
-            
+
             try
             {
                 CheckDependencies(metadata);
@@ -109,7 +108,7 @@ public static partial class ModLoader
             Mod? depMod = ModLibrary.FirstOrDefault(dep.Id);
             if (depMod is null)
             {
-                if (!dep.Optional)
+                if (!dep.IsOptional)
                 {
                     throw new InvalidOperationException($"{metadata.Id} is missing dependency: {dep.Id}");
                 }

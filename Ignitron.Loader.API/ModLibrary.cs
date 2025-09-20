@@ -11,18 +11,40 @@ public static class ModLibrary
 
     public static Mod? FirstOrDefault(string id)
     {
-        return _mods.FirstOrDefault(m => m.Metadata.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+        foreach (Mod mod in _mods)
+        {
+            if (mod.Metadata.Id.Equals(id, StringComparison.OrdinalIgnoreCase))
+            {
+                return mod;
+            }
+        }
+
+        return null;
     }
 
     public static Mod? FirstOrDefault(Func<Mod, bool> predicate)
     {
-        return _mods.FirstOrDefault(predicate);
+        foreach (Mod mod in _mods)
+        {
+            if (predicate(mod))
+            {
+                return mod;
+            }
+        }
+
+        return null;
     }
     
     public static void Add(Mod mod)
     {
         string id = mod.Metadata.Id;
-        if (_mods.Any(m => m.Metadata.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase))) return;
+        foreach (Mod other in _mods)
+        {
+            if (other.Metadata.Id.Equals(id, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException($"Tried to add mod with same ID: {id}");
+            }
+        }
         
         _mods.Add(mod);
         // mod.Initialize(); don't initialize *yet*, mod may access stuff that requires its dependencies
