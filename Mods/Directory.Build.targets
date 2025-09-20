@@ -5,6 +5,13 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
+
+    <ItemGroup>
+        <!-- loader api will be included always, there's no need to copy it -->
+        <ProjectReference Include="..\..\Ignitron.Loader.API\Ignitron.Loader.API.csproj">
+            <Private>false</Private>
+        </ProjectReference>
+    </ItemGroup>
     
     <!-- copy mod directory into the Mods -->
     <Target Name="CopyMod" AfterTargets="AfterBuild">
