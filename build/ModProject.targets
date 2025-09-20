@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <CopyToGameDirectory>false</CopyToGameDirectory>
+        <CopyToGameDirectory Condition="'$(CopyToGameDirectory)' == ''">false</CopyToGameDirectory>
     </PropertyGroup>
 
     <!-- copy mod directory into the Mods. requires 'CopyToGameDirectory' to be set to 'true' -->
