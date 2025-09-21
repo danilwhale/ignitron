@@ -108,7 +108,7 @@ public static partial class ModLoader
             Mod? depMod = ModLibrary.FirstOrDefault(dep.Id);
             if (depMod is null)
             {
-                if (!dep.IsOptional)
+                if (!dep.Optional)
                 {
                     throw new InvalidOperationException($"{metadata.Id} is missing dependency: {dep.Id}");
                 }

@@ -7,5 +7,5 @@ public sealed class ModDependency
 {
     [JsonRequired] public string Id { get; set; } // mod id of the dependency
     [JsonRequired] public WildcardVersion Version { get; set; } // version of the dependency this mod was made for
-    public bool IsOptional { get; set; } // whether this dependency is optional, by default all dependencies are mandatory
+    public bool Optional { get; set; } // whether this dependency is optional, by default all dependencies are mandatory
 }
