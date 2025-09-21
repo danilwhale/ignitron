@@ -1,7 +1,4 @@
 <Solution>
-  <Folder Name="/Mods/">
-    <Project Path="Mods/LocaleLoader/LocaleLoader.csproj" />
-  </Folder>
   <Project Path="Ignitron.Loader.API/Ignitron.Loader.API.csproj" />
   <Project Path="Ignitron.Loader/Ignitron.Loader.csproj" />
 </Solution>

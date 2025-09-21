@@ -86,7 +86,7 @@ to make modloader detect your mod, make `Metadata.json` file with contents:
 ```
 
 you can find more properties in the schema json! you can
-view [LocaleLoader's metadata file](Mods/LocaleLoader/Metadata.json) as an example.
+view [LocaleLoader's metadata file](https://raw.githubusercontent.com/danilwhale/localeloader/f923adac1af461905cdb1d8cb5931172d353314f/LocaleLoader/Metadata.json) as an example.
 
 now you can make the class for your mod! create a new class and inherit `Mod` class:
 
