@@ -21,15 +21,15 @@
         <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'OpenTK.Windowing.GraphicsLibraryFramework.dll'))" Private="false"/>
 
         <!-- soloud -->
-        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'SoLoudLib.dll'))"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'SoLoudLib.dll'))" Private="false"/>
 
         <!-- sql -->
-        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'SQLitePCLRaw.batteries_v2.dll'))"/>
-        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'SQLitePCLRaw.core.dll'))"/>
-        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'SQLitePCLRaw.provider.e_sqlite3.dll'))"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'SQLitePCLRaw.batteries_v2.dll'))" Private="false"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'SQLitePCLRaw.core.dll'))" Private="false"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'SQLitePCLRaw.provider.e_sqlite3.dll'))" Private="false"/>
 
         <!-- stb_image -->
-        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'StbImageSharp.dll'))"/>
-        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'StbImageWriteSharp.dll'))"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'StbImageSharp.dll'))" Private="false"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(UnpackedGameDirectory)', 'StbImageWriteSharp.dll'))" Private="false"/>
     </ItemGroup>
 </Project>
