@@ -13,7 +13,7 @@
         <ProjectReference Include="..\Ignitron.Loader.API\Ignitron.Loader.API.csproj"/>
     </ItemGroup>
 
-    <Target Name="CopyBuildOutput" AfterTargets="AfterBuild">
+    <Target Name="CopyBuildOutput" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Debug'">
         <ItemGroup>
             <BuildFiles Include="$(OutDir)\**\*.*"/>
         </ItemGroup>
