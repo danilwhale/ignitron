@@ -1,0 +1,15 @@
+{
+  "$schema": "https://github.com/danilwhale/ignitron/raw/6fb693e31453d69ab6e1394bc284d025647a2f02/Metadata.schema.json",
+  "AssemblyFile": "Ignitron.Aluminium.dll",
+  "Id": "aluminium",
+  "Name": "Aluminium",
+  "Author": "danilwaffle",
+  "Version": "0.0.1",
+  "Description": "Bundled within mod loader API providing common events and utilities",
+  "Dependencies": [
+    {
+      "Id": "allumeria",
+      "Version": "0.9.*"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <CopyToGameDirectory Condition="'$(Configuration)' == 'Debug'">true</CopyToGameDirectory>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Lib.Harmony" Version="2.4.1" />
+    </ItemGroup>
+
+    <Import Project="..\build\Mod.targets"/>
+
+</Project>
