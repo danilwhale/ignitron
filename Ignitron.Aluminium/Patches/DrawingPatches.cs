@@ -18,8 +18,8 @@ internal static class DrawingPatches
 
         private static void Postfix(Texture ___defaultTexture, Texture ___itemTexture)
         {
-            GameAtlases.Blocks = new TextureSpriteRegistry((uint)___defaultTexture.id);
-            GameAtlases.Items = new TextureSpriteRegistry((uint)___itemTexture.id);
+            GameAtlases.Blocks = new TextureSpriteRegistry(___defaultTexture, false);
+            GameAtlases.Items = new TextureSpriteRegistry(___itemTexture, true);
         }
     }
 }

@@ -24,6 +24,11 @@ public sealed unsafe class TextureSpriteRegistry : ISpriteRegistry
     public readonly uint Handle;
 
     /// <summary>
+    /// Whether the texture is flipped vertically. For example, items atlas is flipped, but blocks' is not
+    /// </summary>
+    public readonly bool Flipped;
+
+    /// <summary>
     /// Width of the texture
     /// </summary>
     public readonly uint Width;
@@ -42,9 +47,10 @@ public sealed unsafe class TextureSpriteRegistry : ISpriteRegistry
     /// Creates a new TextureSpriteRegistry over the target texture
     /// </summary>
     /// <param name="textureHandle">Handle of the target texture</param>
-    public TextureSpriteRegistry(uint textureHandle)
+    public TextureSpriteRegistry(uint textureHandle, bool flipped)
     {
         Handle = textureHandle;
+        Flipped = flipped;
 
         GL.BindTexture(TextureTarget.Texture2D, textureHandle);
 
@@ -63,8 +69,8 @@ public sealed unsafe class TextureSpriteRegistry : ISpriteRegistry
     /// Creates a new TextureSpriteRegistry over the target texture
     /// </summary>
     /// <param name="texture">The target texture</param>
-    public TextureSpriteRegistry(Texture texture)
-        : this((uint)texture.id)
+    public TextureSpriteRegistry(Texture texture, bool flipped)
+        : this((uint)texture.id, flipped)
     {
     }
 
@@ -112,7 +118,9 @@ public sealed unsafe class TextureSpriteRegistry : ISpriteRegistry
         Span<byte> spritePixels = stackalloc byte[Sprite.SizeInPixels * Sprite.SizeInPixels * 4];
         for (byte y = 0; y < Sprite.SizeInPixels; y++)
         {
-            sprite.CopyRowTo(spritePixels.Slice((Sprite.SizeInPixels - 1 - y) * Sprite.SizeInPixels * 4, Sprite.SizeInPixels * 4), y);
+            sprite.CopyRowTo(
+                spritePixels.Slice(y * Sprite.SizeInPixels * 4, Sprite.SizeInPixels * 4),
+                (byte)(Flipped ? Sprite.SizeInPixels - 1 - y : y));
         }
 
         GL.BindTexture(TextureTarget.Texture2D, Handle);
@@ -132,6 +140,9 @@ public sealed unsafe class TextureSpriteRegistry : ISpriteRegistry
         }
 
         GL.BindTexture(TextureTarget.Texture2D, 0);
+
+        // flip the sprite
+        if (Flipped) destination = new SpriteLocation(destination.X, (ushort)(_spritesY - 1 - destination.Y));
 
         // store in the registry
         _registeredSprites[new SpriteEntry(source, location)] = destination;
@@ -165,7 +176,9 @@ public sealed unsafe class TextureSpriteRegistry : ISpriteRegistry
         Span<byte> spritePixels = stackalloc byte[Sprite.SizeInPixels * Sprite.SizeInPixels * 4];
         for (byte y = 0; y < Sprite.SizeInPixels; y++)
         {
-            sprite.CopyRowTo(spritePixels.Slice((Sprite.SizeInPixels - 1 - y) * Sprite.SizeInPixels * 4, Sprite.SizeInPixels * 4), y);
+            sprite.CopyRowTo(
+                spritePixels.Slice(y * Sprite.SizeInPixels * 4, Sprite.SizeInPixels * 4),
+                (byte)(Flipped ? Sprite.SizeInPixels - 1 - y : y));
         }
 
         GL.BindTexture(TextureTarget.Texture2D, Handle);
@@ -186,12 +199,15 @@ public sealed unsafe class TextureSpriteRegistry : ISpriteRegistry
 
         GL.BindTexture(TextureTarget.Texture2D, 0);
 
+        // flip the sprite
+        if (Flipped) destination = new SpriteLocation(destination.X, (ushort)(_spritesY - 1 - destination.Y));
+
         // store in the registry
         _registeredSprites[new SpriteEntry(source, location)] = destination;
 
         return true;
     }
-    
+
     /// <summary>
     /// Dumps backing OpenGL texture data to the target stream using given <see cref="ImageWriter"/>
     /// </summary>
@@ -205,9 +221,8 @@ public sealed unsafe class TextureSpriteRegistry : ISpriteRegistry
         byte[] pixels = ArrayPool<byte>.Shared.Rent((int)(Width * Height * 4));
         GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
 
-        StbImageWrite.stbi_flip_vertically_on_write(1);
+        StbImageWrite.stbi_flip_vertically_on_write(Flipped ? 1 : 0);
         writer.WritePng(pixels, (int)Width, (int)Height, ColorComponents.RedGreenBlueAlpha, destination);
-        StbImageWrite.stbi_flip_vertically_on_write(0);
 
         ArrayPool<byte>.Shared.Return(pixels);
         GL.BindTexture(TextureTarget.Texture2D, 0);
