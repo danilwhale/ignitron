@@ -1,5 +1,7 @@
+using Allumeria;
 using Allumeria.Items;
 using Ignitron.Aluminium.Atlases.Sprites;
+using OpenTK.Mathematics;
 
 namespace Ignitron.Aluminium.Extensions;
 
@@ -14,5 +16,18 @@ public static class ItemExtensions
     public static Item FromSprite(in SpriteLocation location, string strID)
     {
         return new Item((int)location.AtlasX, (int)location.AtlasY, strID);
+    }
+
+    public static Item Add(Func<Item> create)
+    {
+        if (Item.totalItemCount >= Item.items.Length)
+        {
+            // grow items array
+            int newCapacity = MathHelper.Clamp(Item.totalItemCount * 2, Item.totalItemCount + 1, Array.MaxLength);
+            Array.Resize(ref Item.items, newCapacity);
+            Logger.Info($"Grew items array to {newCapacity}");
+        }
+
+        return create();
     }
 }
