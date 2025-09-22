@@ -15,6 +15,8 @@ public static partial class AllumeriaEvents
     private static readonly FieldInfo GameThreadedLoadDone = AccessTools.DeclaredField(typeof(Game), nameof(Game.threadedLoadDone));
     private static readonly FieldInfo GameDeltaTime = AccessTools.DeclaredField(typeof(Game), nameof(Game.deltaTime));
 
+    private static bool _wasThreadedLoadedDone;
+
     [HarmonyPrefix]
     [HarmonyPatch("OnLoad")]
     private static void ImplBeforeLoaded(Game __instance) => BeforeLoaded?.Invoke(__instance);
@@ -30,6 +32,19 @@ public static partial class AllumeriaEvents
     [HarmonyPostfix]
     [HarmonyPatch(nameof(Game.SetupGame))]
     private static void ImplLoadedThreaded(Game __instance) => LoadedThreaded?.Invoke(__instance);
+
+    [HarmonyPrefix]
+    [HarmonyPatch("OnUpdateFrame")]
+    private static void ImplLoadedEverything(Game __instance, bool ___threadedLoadDone)
+    {
+        if (_wasThreadedLoadedDone) return;
+        if (!_wasThreadedLoadedDone && ___threadedLoadDone)
+        {
+            LoadedEverything?.Invoke(__instance);
+        }
+
+        _wasThreadedLoadedDone = ___threadedLoadDone;
+    }
 
     [HarmonyPrefix]
     [HarmonyPatch(nameof(Game.OnTick))]

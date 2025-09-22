@@ -29,6 +29,11 @@ public static partial class AllumeriaEvents
     public static event Action<Game>? LoadedThreaded;
 
     /// <summary>
+    /// Invoked when the game finishes loading assets and components
+    /// </summary>
+    public static event Action<Game>? LoadedEverything;
+
+    /// <summary>
     /// Invoked before game events perform a tick
     /// </summary>
     public static event Action<Game>? BeforeTicked;
