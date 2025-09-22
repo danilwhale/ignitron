@@ -162,10 +162,10 @@ public sealed unsafe class TextureSpriteRegistry : ISpriteRegistry
         }
 
         // insert sprite in a gpu texture
-        Span<byte> spritePixels = stackalloc byte[Sprite.SizeInPixels * Sprite.SizeInPixels];
+        Span<byte> spritePixels = stackalloc byte[Sprite.SizeInPixels * Sprite.SizeInPixels * 4];
         for (byte y = 0; y < Sprite.SizeInPixels; y++)
         {
-            sprite.CopyRowTo(spritePixels.Slice(y * Sprite.SizeInPixels, Sprite.SizeInPixels), y);
+            sprite.CopyRowTo(spritePixels.Slice((Sprite.SizeInPixels - 1 - y) * Sprite.SizeInPixels * 4, Sprite.SizeInPixels * 4), y);
         }
 
         GL.BindTexture(TextureTarget.Texture2D, Handle);
