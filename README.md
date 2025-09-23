@@ -33,22 +33,20 @@ done!
 > [!IMPORTANT]
 > you need to have [.NET SDK 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) installed!
 
-first of all, you need to download the game (modloader is targetted for 0.9.4, but should work with any version after
-0.9). after downloading, unpack the game somewhere, then
-[install sfextract](https://github.com/Droppers/SingleFileExtractor?tab=readme-ov-file#install) and run:
-```
-sfextract Allumeria.exe -o unpacked
-```
-in the game directory.
+1. download [allumeria](https://unobtainablemelon.itch.io/allumeria) (modloader is targetted for 0.9.5, which is latest
+   as of 23-09-2025)
+2. unpack it somewhere
+3. ***[install sfextract](https://github.com/Droppers/SingleFileExtractor?tab=readme-ov-file#install)***
+   - `dotnet tool install -g sfextract` (if you're too lazy to click the link)
+4. unpack the game executable
+    - `sfextract Allumeria.exe -o unpacked`
+5. set environment variables
+   - `ALLUMERIA_GAME_DIR` = `<GAME_DIRECTORY>` (directory with `Allumeria.exe`)
+   - `ALLUMERIA_UNPACKED_DIR` = `<GAME_DIRECTORY>/unpacked` (if you followed previous step. otherwise, directory with `Allumeria.dll` and similar)
 
 > [!IMPORTANT]
 > you won't be able to run the game as is. you need to edit `Allumeria.runtimeconfig.json` a bit: replace
 `includedFrameworks` with `frameworks`; also set environment variable `DOTNET_READYTORUN` to `0`.
-
-now, go to `/Directory.Build.props`, uncomment and edit `GameDirectory` and `UnpackedGameDirectory` to paths of
-directories with
-`Allumeria.exe` and `Allumeria.dll` (should be `<GAME_DIRECTORY>/unpacked`, if you followed previous step)
-respectively. now you're done with configuring the workspace
 
 #### building
 
