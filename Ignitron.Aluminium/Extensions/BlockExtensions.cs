@@ -37,11 +37,16 @@ public static class BlockExtensions
         return block.SetItemSprite(location.X, location.Y);
     }
 
+    /// <summary>
+    /// Expands <see cref="Block.blocks"/> to fit the block and adds it
+    /// </summary>
+    /// <param name="create">Block creation function</param>
+    /// <returns>Block created using <paramref name="create"/></returns>
     public static Block Add(Func<Block> create)
     {
         if (Block.totalBlockCount >= Block.blocks.Length)
         {
-            // grow items array
+            // grow blocks array
             int newCapacity = MathHelper.Clamp(Block.totalBlockCount * 2, Block.totalBlockCount + 1, Array.MaxLength);
             Array.Resize(ref Block.blocks, newCapacity);
             Logger.Info($"Grew blocks array to {newCapacity}");

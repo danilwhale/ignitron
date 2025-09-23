@@ -18,6 +18,11 @@ public static class ItemExtensions
         return new Item((int)location.AtlasX, (int)location.AtlasY, strID);
     }
 
+    /// <summary>
+    /// Expands <see cref="Item.items"/> to fit the item and adds it
+    /// </summary>
+    /// <param name="create">Item creation function</param>
+    /// <returns>Item created using <paramref name="create"/></returns>
     public static Item Add(Func<Item> create)
     {
         if (Item.totalItemCount >= Item.items.Length)
