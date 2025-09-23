@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Ignitron.Aluminium.Atlases.Sprites;
+using StbImageSharp;
 
 namespace Ignitron.Aluminium.Atlases;
 
@@ -58,5 +59,24 @@ public sealed class AtlasSpriteSource : ISpriteSource
 
         sprite = s;
         return true;
+    }
+
+    /// <summary>
+    /// Creates a new AtlasSpriteSource from the target image stream
+    /// </summary>
+    public static AtlasSpriteSource FromStream(Stream stream)
+    {
+        StbImage.stbi_set_flip_vertically_on_load(0);
+        ImageResult image = ImageResult.FromStream(stream);
+        return new AtlasSpriteSource(image.Data, (uint)image.Width, (uint)image.Height);
+    }
+
+    /// <summary>
+    /// Creates a new AtlasSpriteSource from the target image file
+    /// </summary>
+    public static AtlasSpriteSource FromFile(string filePath)
+    {
+        using Stream stream = File.OpenRead(filePath);
+        return FromStream(stream);
     }
 }
