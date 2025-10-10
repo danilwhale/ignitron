@@ -3,14 +3,14 @@ using Ignitron.Loader.API;
 
 namespace Ignitron.Loader;
 
-public class Entrypoint
+public class IgnitronExternalLoader : IExternalLoader
 {
-    public static void Init()
+    public void Init()
     {
         Logger.Init("testicular tortion");
 
         // get version field from loaded assembly
-        string fullVersion = Game.VERSION!;
+        string fullVersion = Game.VERSION;
         Logger.Init($"Game version: {fullVersion}");
 
         // append '/ignitron {ver}' so you can identify presence of the modloader

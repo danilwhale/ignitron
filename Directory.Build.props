@@ -1,7 +1,7 @@
 <Project>
     <!-- IMPORTANT: uncomment and change these if you're going to build or work on this !! -->
     <PropertyGroup>
-        <!-- <GameDirectory>[GAME_DIR]</GameDirectory> -->
-        <!-- <UnpackedGameDirectory>[UNPACKED_GAME_DIR]</UnpackedGameDirectory> -->
+        <GameDirectory>$(ALLUMERIA_GAME_DIR)</GameDirectory>
+        <UnpackedGameDirectory>$(ALLUMERIA_UNPACKED_DIR)</UnpackedGameDirectory>
     </PropertyGroup>
 </Project>
