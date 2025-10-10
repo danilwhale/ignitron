@@ -2,7 +2,7 @@ using System.Buffers;
 using Allumeria;
 using Allumeria.Rendering;
 using Ignitron.Aluminium.Atlases.Sprites;
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using StbImageWriteSharp;
 
 namespace Ignitron.Aluminium.Atlases;

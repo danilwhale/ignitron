@@ -3,7 +3,7 @@ using System.Reflection.Emit;
 using Allumeria;
 using Allumeria.Rendering.Profiling;
 using HarmonyLib;
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Windowing.Common;
 
 namespace Ignitron.Aluminium.Events;
@@ -76,7 +76,7 @@ public static partial class AllumeriaEvents
     {
         CodeMatcher cm = new CodeMatcher(instructions, generator)
             .MatchStartForward(
-                new CodeMatch(OpCodes.Ldfld, GameThreadedLoadDone),
+                new CodeMatch(OpCodes.Ldsfld, GameThreadedLoadDone),
                 new CodeMatch(OpCodes.Brfalse))
             .ThrowIfInvalid("couldn't find 'if (!this.threadedLoadDone)'");
 
