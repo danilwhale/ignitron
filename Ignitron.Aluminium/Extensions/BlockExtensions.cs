@@ -1,7 +1,7 @@
 using Allumeria;
 using Allumeria.Blocks.BlockModels;
 using Allumeria.Blocks.Blocks;
-using Ignitron.Aluminium.Atlases.Sprites;
+using Ignitron.Aluminium.Atlases;
 using OpenTK.Mathematics;
 
 namespace Ignitron.Aluminium.Extensions;
@@ -12,19 +12,20 @@ public static class BlockExtensions
     /// Sets the side and main texture of the block to the target location
     /// </summary>
     /// <param name="location">The target location</param>
-    public static Block SetTexture(this Block block, in SpriteLocation location)
+    public static Block SetTexture(this Block block, in StitchedSprite sprite)
     {
-        return block.SetTexture((ushort)location.AtlasX, (ushort)location.AtlasY);
+        block.faceTexture = new FaceTexture(sprite.U0, sprite.V0, sprite.Width, sprite.Height);
+        return block;
     }
 
     /// <summary>
     /// Sets the side texture of the block to the target location
     /// </summary>
     /// <param name="location">The target location</param>
-    public static Block SetSideTexture(this Block block, in SpriteLocation location)
+    public static Block SetSideTexture(this Block block, in StitchedSprite sprite)
     {
         // you will have minor inconvenience if your sprite is beyond 4096 on any axis, but this *technically* shouldn't happen
-        block.sideTexture = new FaceTexture((ushort)location.AtlasX, (ushort)location.AtlasY, Sprite.SizeInPixels, Sprite.SizeInPixels);
+        block.sideTexture = new FaceTexture(sprite.U0, sprite.V0, sprite.Width, sprite.Height);
         return block;
     }
 
@@ -32,9 +33,10 @@ public static class BlockExtensions
     /// Sets the item sprite of the block to the target location
     /// </summary>
     /// <param name="location">The target location</param>
-    public static Block SetItemSprite(this Block block, in SpriteLocation location)
+    public static Block SetItemSprite(this Block block, in StitchedSprite sprite)
     {
-        return block.SetItemSprite(location.X, location.Y);
+        // TODO: find a hack to set uv rectangle of an item
+        return block.SetItemSprite(sprite.U0, sprite.V0);
     }
 
     /// <summary>

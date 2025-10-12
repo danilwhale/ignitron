@@ -1,15 +1,13 @@
 using System.Reflection;
 using Allumeria.Rendering;
 using HarmonyLib;
-using Ignitron.Aluminium.Atlases;
 
-namespace Ignitron.Aluminium.Patches;
+namespace Ignitron.Aluminium.Atlases;
 
-[HarmonyPatch]
-internal static class DrawingPatches
+public static class TextureAtlases
 {
     [HarmonyPatch]
-    private static class InitPatch
+    private static class DrawingPatches
     {
         private static MethodBase TargetMethod()
         {
@@ -18,8 +16,11 @@ internal static class DrawingPatches
 
         private static void Postfix(Texture ___defaultTexture, Texture ___itemTexture)
         {
-            GameAtlases.Blocks = new TextureSpriteRegistry(___defaultTexture, false);
-            GameAtlases.Items = new TextureSpriteRegistry(___itemTexture, true);
+            Blocks = new TextureAtlas(___defaultTexture, false);
+            Items = new TextureAtlas(___itemTexture, true);
         }
     }
+    
+    public static TextureAtlas Blocks { get; private set; }
+    public static TextureAtlas Items { get; private set; }
 }

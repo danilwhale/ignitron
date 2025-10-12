@@ -1,4 +1,6 @@
 using HarmonyLib;
+using Ignitron.Aluminium.Atlases;
+using Ignitron.Aluminium.Events;
 using Ignitron.Loader.API;
 
 namespace Ignitron.Aluminium;

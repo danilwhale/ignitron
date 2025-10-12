@@ -1,6 +1,6 @@
 using Allumeria;
 using Allumeria.Items;
-using Ignitron.Aluminium.Atlases.Sprites;
+using Ignitron.Aluminium.Atlases;
 using OpenTK.Mathematics;
 
 namespace Ignitron.Aluminium.Extensions;
@@ -13,9 +13,9 @@ public static class ItemExtensions
     /// <param name="location">The target sprite location</param>
     /// <param name="strID">The string ID of an item</param>
     /// <returns></returns>
-    public static Item FromSprite(in SpriteLocation location, string strID)
+    public static Item FromSprite(in StitchedSprite sprite, string strID)
     {
-        return new Item((int)location.AtlasX, (int)location.AtlasY, strID);
+        return new Item(sprite.U0, sprite.V0, strID);
     }
 
     /// <summary>
