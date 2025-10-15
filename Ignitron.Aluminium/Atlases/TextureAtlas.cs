@@ -7,6 +7,9 @@ using StbImageWriteSharp;
 
 namespace Ignitron.Aluminium.Atlases;
 
+/// <summary>
+/// A wrapper around the texture object that allows to stitch new sprites on it
+/// </summary>
 public sealed unsafe class TextureAtlas : IStitcher, IAtlas
 {
     private readonly record struct SpriteView(ISprite Value)
@@ -102,10 +105,22 @@ public sealed unsafe class TextureAtlas : IStitcher, IAtlas
         }
     }
 
+    /// <summary>
+    /// The texture object that is getting wrapped
+    /// </summary>
     public Texture Texture { get; }
+    
+    /// <summary>
+    /// A value indicating whether the texture is flipped vertically
+    /// </summary>
     public bool IsFlipped { get; }
+
     public int Width => _width;
     public int Height => _height;
+    
+    /// <summary>
+    /// Base size of every slot during the slots generation
+    /// </summary>
     public int BaseSlotSize { get; }
 
     private readonly int _width;
@@ -114,6 +129,12 @@ public sealed unsafe class TextureAtlas : IStitcher, IAtlas
     private readonly List<Slot> _slots = [];
     private readonly Dictionary<string, StitchedSprite> _sprites = [];
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TextureAtlas"/> that will wrap the given texture object
+    /// </summary>
+    /// <param name="texture">The texture object to wrap</param>
+    /// <param name="flipped">A value indicating whether the texture is flipped vertically</param>
+    /// <param name="baseSlotSize">Base size of every slot during the slots generation</param>
     public TextureAtlas(Texture texture, bool flipped, int baseSlotSize)
     {
         Texture = texture;
@@ -244,6 +265,10 @@ public sealed unsafe class TextureAtlas : IStitcher, IAtlas
         static bool IsValidSlot(Span<uint> validSlots, int index) => (validSlots[index >> 5] & (1 << index)) != 0;
     }
 
+    /// <summary>
+    /// Debug method to dump the stored slots in the given stream as a PNG image
+    /// </summary>
+    /// <param name="stream">The stream to write a PNG image to</param>
     public void DumpDebugSlots(Stream stream)
     {
         byte[] pixels = ArrayPool<byte>.Shared.Rent(Width * Height * 4);
