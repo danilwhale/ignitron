@@ -305,16 +305,31 @@ public sealed unsafe class TextureAtlas : IStitcher, IAtlas
 
     public StitchedSprite GetSprite(string name)
     {
-        throw new NotImplementedException();
+        return _sprites[name];
+    }
+
+    public bool TryGetSprite(string name, out StitchedSprite stitchedSprite)
+    {
+        return _sprites.TryGetValue(name, out stitchedSprite);
     }
 
     public StitchedSprite AddSprite(string name, ISprite sprite)
     {
+        if (!TryAddSprite(name, sprite, out StitchedSprite stitchedSprite))
+        {
+            throw new InvalidOperationException("Couldn't fit place for a sprite in the atlas!");
+        }
+
+        return stitchedSprite;
+    }
+
+    public bool TryAddSprite(string name, ISprite sprite, out StitchedSprite stitchedSprite)
+    {
         // IMPORTANT we have to stitch sprites on-the-fly, as we can't change UV coordinates of
         //           the block or item we haven't been provided through Stitch method
-        if (_sprites.TryGetValue(name, out StitchedSprite stitchedSprite))
+        if (_sprites.TryGetValue(name, out stitchedSprite))
         {
-            return stitchedSprite;
+            return true;
         }
 
         SpriteView view = new(sprite);
@@ -326,23 +341,27 @@ public sealed unsafe class TextureAtlas : IStitcher, IAtlas
 
                 // copy sprite into a buffer
                 Span<byte> buffer = stackalloc byte[w * h * 4];
-                for (int i = 0; i < h; i++) sprite.CopyRowTo(i, buffer.Slice(i * w * 4, w * 4));
+                for (int i = 0; i < h; i++)
+                {
+                    sprite.CopyRowTo(IsFlipped ? h - i - 1 : i, buffer.Slice(i * w * 4, w * 4));
+                }
 
                 // send sprite to gpu
                 GL.BindTexture(TextureTarget.Texture2D, Texture.id);
                 GL.TexSubImage2D(
                     TextureTarget.Texture2D,
                     0,
-                    stitchedSprite.U0, stitchedSprite.V0, w, h,
+                    stitchedSprite.U0, IsFlipped ? Height - stitchedSprite.V1 : stitchedSprite.V0, w, h,
                     PixelFormat.Rgba, PixelType.UnsignedByte,
                     (nint)Unsafe.AsPointer(ref buffer.GetPinnableReference()) // should be safe to do as span never escapes the stack
                 );
 
-                return stitchedSprite;
+                return true;
             }
         }
 
         // TODO: expand
-        throw new InvalidOperationException("Couldn't fit a sprite in the atlas!");
+        stitchedSprite = default;
+        return false;
     }
 }
