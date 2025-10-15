@@ -357,6 +357,7 @@ public sealed unsafe class TextureAtlas : IStitcher, IAtlas
                     (nint)Unsafe.AsPointer(ref buffer.GetPinnableReference()) // should be safe to do as span never escapes the stack
                 );
 
+                _sprites[name] = stitchedSprite;
                 return true;
             }
         }
