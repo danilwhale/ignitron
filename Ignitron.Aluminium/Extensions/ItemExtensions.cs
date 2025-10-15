@@ -17,6 +17,20 @@ public static class ItemExtensions
     {
         return new Item(sprite.U0, sprite.V0, strID);
     }
+    
+    /// <summary>
+    /// Expands <see cref="Item.items"/> to fit specified count of items
+    /// </summary>
+    /// <param name="count">Count of items to expand registry for</param>
+    public static void GrowRegistry(int count)
+    {
+        if (Item.totalItemCount + count >= Item.items.Length)
+        {
+            int newCapacity = MathHelper.Clamp(Item.totalItemCount * 2, Item.totalItemCount + count, Array.MaxLength);
+            Array.Resize(ref Item.items, newCapacity);
+            Logger.Info($"Grew items array to {newCapacity}");
+        }
+    }
 
     /// <summary>
     /// Expands <see cref="Item.items"/> to fit the item and adds it
@@ -25,14 +39,7 @@ public static class ItemExtensions
     /// <returns>Item created using <paramref name="create"/></returns>
     public static Item Add(Func<Item> create)
     {
-        if (Item.totalItemCount >= Item.items.Length)
-        {
-            // grow items array
-            int newCapacity = MathHelper.Clamp(Item.totalItemCount * 2, Item.totalItemCount + 1, Array.MaxLength);
-            Array.Resize(ref Item.items, newCapacity);
-            Logger.Info($"Grew items array to {newCapacity}");
-        }
-
+        GrowRegistry(1);
         return create();
     }
 }
