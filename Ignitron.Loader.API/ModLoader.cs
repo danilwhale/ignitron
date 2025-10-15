@@ -93,9 +93,13 @@ public static partial class ModLoader
             .Where(t => t.IsAssignableTo(typeof(Mod)))
             .Select(t => (Mod?)Activator.CreateInstance(t))
             .Where(m => m != null);
+
+        ModRuntimeData runtimeData = new(path);
+        
         foreach (Mod? mod in mods)
         {
             mod!.Metadata = metadata;
+            mod.RuntimeData = runtimeData;
             ModLibrary.Add(mod);
         }
     }
