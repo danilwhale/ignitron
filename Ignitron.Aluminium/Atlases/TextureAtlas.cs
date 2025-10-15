@@ -1,5 +1,4 @@
 using System.Buffers;
-using System.Collections;
 using System.Runtime.CompilerServices;
 using Allumeria.Rendering;
 using OpenTK.Graphics.OpenGL;
@@ -107,6 +106,7 @@ public sealed unsafe class TextureAtlas : IStitcher, IAtlas
     public bool IsFlipped { get; }
     public int Width => _width;
     public int Height => _height;
+    public int BaseSlotSize { get; }
 
     private readonly int _width;
     private readonly int _height;
@@ -114,10 +114,11 @@ public sealed unsafe class TextureAtlas : IStitcher, IAtlas
     private readonly List<Slot> _slots = [];
     private readonly Dictionary<string, StitchedSprite> _sprites = [];
 
-    public TextureAtlas(Texture texture, bool flipped)
+    public TextureAtlas(Texture texture, bool flipped, int baseSlotSize)
     {
         Texture = texture;
         IsFlipped = flipped;
+        BaseSlotSize = baseSlotSize;
 
         if (texture.sourceImage != null)
         {
@@ -153,26 +154,26 @@ public sealed unsafe class TextureAtlas : IStitcher, IAtlas
     // human obfuscation has been performed
     private void FindSlots(byte[] pixels)
     {
-        int slotsX = Width >> 4;
-        int slotsY = Height >> 4;
+        int slotsX = Width / BaseSlotSize;
+        int slotsY = Height / BaseSlotSize;
 
         // we store 32 slots per 1 value. that is, we use 1 bit to determine whether slot is valid or not
         Span<uint> validSlots = stackalloc uint[((slotsX * slotsY) - 1 + (1 << 5)) >> 5];
 
-        // compute slots (16x16 areas) that are opaque, i.e. have pixels in them
+        // compute slots (NxN areas) that are opaque, i.e. have pixels in them
         int n = 0; // index of the slot
         for (int y = 0; y < slotsY; y++)
         for (int x = 0; x < slotsX; x++)
         {
             uint bm = (uint)(1 << n); // bit mask (which bit we're going to update)
 
-            // iterate over 16x16 area to find any non-transparent pixel (anything with alpha > 0)
+            // iterate over NxN area to find any non-transparent pixel (anything with alpha > 0)
             bool o = true; // whether the slot is opaque
-            for (int yy = 0; yy < 16; yy++)
-            for (int xx = 0; xx < 16; xx++)
+            for (int yy = 0; yy < BaseSlotSize; yy++)
+            for (int xx = 0; xx < BaseSlotSize; xx++)
             {
                 // check if alpha channel is blank
-                if (pixels[(((y << 4) + yy) * Width + ((x << 4) + xx)) * 4 + 3] != 0)
+                if (pixels[(((y * BaseSlotSize) + yy) * Width + ((x * BaseSlotSize) + xx)) * 4 + 3] != 0)
                 {
                     o = false;
                     goto writeBit;
@@ -225,7 +226,7 @@ public sealed unsafe class TextureAtlas : IStitcher, IAtlas
                 }
 
                 // add slot to the storage
-                _slots.Add(new Slot(x << 4, y << 4, w << 4, h << 4));
+                _slots.Add(new Slot(x * BaseSlotSize, y * BaseSlotSize, w * BaseSlotSize, h * BaseSlotSize));
                 n += w;
                 x += w;
             }
