@@ -32,4 +32,10 @@ public sealed class ImageSprite : ISprite
         ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
         return new ImageSprite(image.Width, image.Height, image.Data);
     }
+
+    public static ImageSprite FromFile(string path)
+    {
+        using FileStream stream = File.OpenRead(path);
+        return FromStream(stream);
+    }
 }
