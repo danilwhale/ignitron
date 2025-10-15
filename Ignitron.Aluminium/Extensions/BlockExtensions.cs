@@ -14,7 +14,8 @@ public static class BlockExtensions
     /// <param name="sprite">The target sprite</param>
     public static Block SetTexture(this Block block, in StitchedSprite sprite)
     {
-        block.faceTexture = new FaceTexture(sprite.U0, sprite.V0, sprite.Width, sprite.Height);
+        block.faceTexture =
+            block.sideTexture = new FaceTexture(sprite.U0, sprite.V0, sprite.Width, sprite.Height);
         return block;
     }
 
