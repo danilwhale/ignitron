@@ -1,0 +1,15 @@
+{
+  "$schema": "https://github.com/danilwhale/ignitron/raw/6fb693e31453d69ab6e1394bc284d025647a2f02/Metadata.schema.json",
+  "AssemblyFile": "Ignitron.TestMod.dll",
+  "Id": "test_mod",
+  "Name": "Test Mod",
+  "Author": "danilwaffle",
+  "Version": "1.0",
+  "Description": "a",
+  "Dependencies": [
+    {
+      "Id": "allumeria",
+      "Version": "0.9"
+    }
+  ]
+}

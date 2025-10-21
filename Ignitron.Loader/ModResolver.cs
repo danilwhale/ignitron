@@ -1,0 +1,117 @@
+using System.Text.Json;
+using Allumeria;
+using Ignitron.Loader.Metadata;
+
+namespace Ignitron.Loader;
+
+internal sealed class ModResolver(IgnitronLoader loader)
+{
+    private readonly List<ModBox> _foundMods = [];
+
+    public List<ModBox> Resolve(string rootPath)
+    {
+        // include allumeria by default
+        _foundMods.Add(new ModBox(new AllumeriaModMetadata(), loader.GamePath));
+
+        try
+        {
+            FindMods(rootPath);
+        }
+        catch (Exception ex)
+        {
+            throw new ModResolverException("Unexpected exception during finding mods", ex);
+        }
+
+        try
+        {
+            ResolveDependencies();
+        }
+        catch (Exception ex)
+        {
+            throw new ModResolverException("Unexpected exception during resolving dependencies", ex);
+        }
+
+        return _foundMods;
+    }
+
+    private void FindMods(string rootPath)
+    {
+        foreach (string modRootPath in Directory.GetDirectories(rootPath))
+        {
+            string metadataPath = Path.Join(modRootPath, "Metadata.json");
+            if (!File.Exists(metadataPath))
+            {
+                // not a mod directory
+                continue;
+            }
+
+            // deserialize metadata
+            using FileStream stream = File.OpenRead(metadataPath);
+            IModMetadata? metadata = JsonSerializer.Deserialize<LegacyJsonModMetadata>(stream);
+            if (metadata == null)
+            {
+                throw new InvalidOperationException($"Deserialized '{metadataPath}' is null");
+            }
+
+            string assemblyPath = Path.Join(modRootPath, metadata.AssemblyRelativePath);
+            if (!File.Exists(assemblyPath))
+            {
+                throw new FileNotFoundException($"Assembly file at '{assemblyPath}' doesn't exist");
+            }
+
+            // include
+            _foundMods.Add(new ModBox(metadata, modRootPath, assemblyPath));
+        }
+    }
+
+    private void ResolveDependencies()
+    {
+        foreach (ModBox mod in _foundMods)
+        {
+            foreach (IModDependency dependency in mod.Metadata.Dependencies)
+            {
+                ModBox? found = null;
+                foreach (ModBox dependencyMod in _foundMods)
+                {
+                    if (dependencyMod.Metadata.Id.Equals(dependency.Id, StringComparison.Ordinal))
+                    {
+                        found = dependencyMod;
+                        break;
+                    }
+                }
+
+                if (found == null)
+                {
+                    switch (dependency.Type)
+                    {
+                        case ModDependencyType.Mandatory:
+                            throw new InvalidOperationException($"'{mod.Metadata.Id}' is missing dependency: '{dependency.Id}' {dependency.Version}");
+                        case ModDependencyType.Recommended:
+                            Logger.Info($"'{mod.Metadata.Id}' recommends installing '{dependency.Id}' {dependency.Version}");
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (dependency.Type)
+                    {
+                        case ModDependencyType.NotRecommended:
+                            Logger.Warn($"'{mod.Metadata.Id}' suggests removing '{dependency.Id}' {dependency.Version}");
+                            break;
+                        case ModDependencyType.Incompatible:
+                            throw new InvalidOperationException($"'{mod.Metadata.Id}' is incompatible with '{dependency.Id}' {dependency.Version}");
+                        case ModDependencyType.Mandatory
+                            when !dependency.Version.Equals(found.Metadata.Version):
+                            throw new InvalidOperationException(
+                                $"'{mod.Metadata.Id}' needs '{dependency.Id}' of version {dependency.Version}, but {found.Metadata.Version} is installed instead");
+                        case ModDependencyType.Optional or ModDependencyType.Recommended
+                            when !dependency.Version.Equals(found.Metadata.Version):
+                            Logger.Warn(
+                                $"'{mod.Metadata.Id}' suggests '{dependency.Id}' of version {dependency.Version}, but {found.Metadata.Version} is installed instead");
+                            break;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -5,7 +5,11 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+    
+    <PropertyGroup>
+        <CopyToGameDirectory Condition="'$(Configuration)' == 'Debug'">true</CopyToGameDirectory>
+    </PropertyGroup>
 
-    <Import Project="$(MSBuildThisFileDirectory)..\build\CommonAssemblies.props"/>
+    <Import Project="..\build\Mod.targets"/>
 
 </Project>

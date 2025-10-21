@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json.Serialization;
 
-namespace Ignitron.Loader.API.Versioning;
+namespace Ignitron.Loader.Metadata;
 
 /// <summary>
 /// version struct that supports wildcards.
