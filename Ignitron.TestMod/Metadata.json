@@ -1,15 +1,29 @@
 {
-  "$schema": "https://github.com/danilwhale/ignitron/raw/6fb693e31453d69ab6e1394bc284d025647a2f02/Metadata.schema.json",
-  "AssemblyFile": "Ignitron.TestMod.dll",
-  "Id": "test_mod",
-  "Name": "Test Mod",
-  "Author": "danilwaffle",
-  "Version": "1.0",
-  "Description": "a",
-  "Dependencies": [
+  "$schema": "https://raw.githubusercontent.com/danilwhale/ignitron/refs/heads/master/Metadata.schema.json",
+  "schema_version": 2,
+  "assembly_relative_path": "Ignitron.TestMod.dll",
+  "id": "test_mod",
+  "display_name": "Test Mod",
+  "contributors": [
     {
-      "Id": "allumeria",
-      "Version": "0.9"
+      "name": "danilwaffle",
+      "role": "developer"
     }
+  ],
+  "version": "1.0",
+  "description": "a",
+  "dependencies": [
+    {
+      "id": "allumeria",
+      "version": "0.9"
+    },
+    {
+      "id": "shitfuck",
+      "version": "0.69.840",
+      "type": "recommended"
+    }
+  ],
+  "entrypoints": [
+    "Ignitron.TestMod.TestMod"
   ]
 }

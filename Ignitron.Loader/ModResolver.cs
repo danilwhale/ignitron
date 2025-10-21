@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Allumeria;
 using Ignitron.Loader.Metadata;
+using Ignitron.Loader.Metadata.Json;
 
 namespace Ignitron.Loader;
 
@@ -47,7 +48,24 @@ internal sealed class ModResolver(IgnitronLoader loader)
 
             // deserialize metadata
             using FileStream stream = File.OpenRead(metadataPath);
-            IModMetadata? metadata = JsonSerializer.Deserialize<LegacyJsonModMetadata>(stream);
+            using JsonDocument metadataDoc = JsonDocument.Parse(stream);
+            
+            IModMetadata metadata;
+            if (!metadataDoc.RootElement.TryGetProperty("schema_version", out JsonElement schemaVersionElement) ||
+                !schemaVersionElement.TryGetInt32(out int schemaVersion))
+            {
+                throw new InvalidOperationException("Invalid metadata definition");
+            }
+
+            if (schemaVersion == 2)
+            {
+                metadata = metadataDoc.Deserialize<JsonV2ModMetadata>()!;
+            }
+            else
+            {
+                throw new InvalidOperationException("Invalid schema version. Are you trying to run mod made for newer version?");
+            }
+            
             if (metadata == null)
             {
                 throw new InvalidOperationException($"Deserialized '{metadataPath}' is null");

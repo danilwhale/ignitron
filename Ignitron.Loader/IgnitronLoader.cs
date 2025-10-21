@@ -93,7 +93,7 @@ public sealed partial class IgnitronLoader : IExternalLoader
             try
             {
                 IEnumerable<string>? entrypointNames = mod.Metadata.Entrypoints;
-                if (entrypointNames != null && !entrypointNames.Any())
+                if (!entrypointNames.Any())
                 {
                     Logger.Init($"'{mod.Metadata.Id}' doesn't have any entrypoints defined, skipping");
                     continue;
@@ -101,22 +101,9 @@ public sealed partial class IgnitronLoader : IExternalLoader
 
                 Assembly ass = Assembly.LoadFrom(mod.AssemblyPath);
 
-                IEnumerable<IModEntrypoint> entrypoints;
-                if (mod.Metadata.Entrypoints != null)
-                {
-                    // resolve entrypoints from given type names
-                    entrypoints = mod.Metadata.Entrypoints
-                        .Select(e => ass.GetType(e, true)!)
-                        .Where(t => t.IsAssignableTo(typeof(IModEntrypoint)))
-                        .Select(t => (IModEntrypoint)Activator.CreateInstance(t)!);
-                }
-                else
-                {
-                    // find all entrypoints manually
-                    entrypoints = ass.GetExportedTypes()
-                        .Where(t => t.IsAssignableTo(typeof(IModEntrypoint)))
-                        .Select(t => (IModEntrypoint)Activator.CreateInstance(t)!);
-                }
+                IEnumerable<IModEntrypoint> entrypoints = ass.GetExportedTypes()
+                    .Where(t => t.IsAssignableTo(typeof(IModEntrypoint)))
+                    .Select(t => (IModEntrypoint)Activator.CreateInstance(t)!);
 
                 foreach (IModEntrypoint entrypoint in entrypoints)
                 {
