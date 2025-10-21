@@ -112,7 +112,7 @@ public sealed partial class IgnitronLoader : IExternalLoader
             }
             catch (Exception ex)
             {
-                throw new ModInitialiseException($"Unexpected exception during initialising '{mod.Metadata.Id}'", ex);
+                throw new ModInitialiseException($"Unexpected exception when initialising '{mod.Metadata.Id}'", ex);
             }
         }
     }

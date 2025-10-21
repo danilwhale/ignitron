@@ -16,11 +16,11 @@ internal sealed class ModResolver(IgnitronLoader loader)
 
         try
         {
-            FindMods(rootPath);
+            CollectMods(rootPath);
         }
         catch (Exception ex)
         {
-            throw new ModResolverException("Unexpected exception during finding mods", ex);
+            throw new ModResolverException("Unexpected exception when collecting mods", ex);
         }
 
         try
@@ -29,13 +29,13 @@ internal sealed class ModResolver(IgnitronLoader loader)
         }
         catch (Exception ex)
         {
-            throw new ModResolverException("Unexpected exception during resolving dependencies", ex);
+            throw new ModResolverException("Unexpected exception when resolving dependencies", ex);
         }
 
         return _foundMods;
     }
 
-    private void FindMods(string rootPath)
+    private void CollectMods(string rootPath)
     {
         foreach (string modRootPath in Directory.GetDirectories(rootPath))
         {
@@ -117,7 +117,7 @@ internal sealed class ModResolver(IgnitronLoader loader)
                             Logger.Warn($"'{mod.Metadata.Id}' suggests removing '{dependency.Id}' {dependency.Version}");
                             break;
                         case ModDependencyType.Incompatible:
-                            throw new InvalidOperationException($"'{mod.Metadata.Id}' is incompatible with '{dependency.Id}' {dependency.Version}");
+                            throw new InvalidOperationException($"'{mod.Metadata.Id}' isn't compatible with '{dependency.Id}' {dependency.Version}");
                         case ModDependencyType.Mandatory
                             when !dependency.Version.Equals(found.Metadata.Version):
                             throw new InvalidOperationException(
