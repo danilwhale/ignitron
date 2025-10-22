@@ -8,6 +8,7 @@ namespace Ignitron.Loader;
 internal sealed class ModResolver(IgnitronLoader loader)
 {
     private readonly List<ModBox> _foundMods = [];
+    private readonly HashSet<string> _foundModIds = [];
 
     public List<ModBox> Resolve(string rootPath)
     {
@@ -71,6 +72,12 @@ internal sealed class ModResolver(IgnitronLoader loader)
                 throw new InvalidOperationException($"Deserialized '{metadataPath}' is null");
             }
 
+            // make sure mod hasn't been loaded before
+            if (_foundModIds.Contains(metadata.Id))
+            {
+                throw new InvalidOperationException($"'{metadata.Id}' has been duplicated!");
+            }
+
             string assemblyPath = Path.Join(modRootPath, metadata.AssemblyRelativePath);
             if (!File.Exists(assemblyPath))
             {
@@ -79,6 +86,7 @@ internal sealed class ModResolver(IgnitronLoader loader)
 
             // include
             _foundMods.Add(new ModBox(metadata, modRootPath, assemblyPath));
+            _foundModIds.Add(metadata.Id);
         }
     }
 
