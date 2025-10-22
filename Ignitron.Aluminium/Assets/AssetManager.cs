@@ -1,6 +1,6 @@
 using Ignitron.Aluminium.Assets.Descriptors;
 using Ignitron.Aluminium.Assets.Providers;
-using Ignitron.Loader.API;
+using Ignitron.Loader;
 
 namespace Ignitron.Aluminium.Assets;
 
@@ -25,8 +25,8 @@ public sealed class AssetManager(string rootPath)
     {
     }
 
-    public AssetManager(Mod mod)
-        : this(Path.Join(mod.RuntimeData.RootPath, RootDirectory))
+    public AssetManager(ModBox mod)
+        : this(Path.Join(mod.RootPath, RootDirectory))
     {
     }
 

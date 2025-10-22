@@ -1,15 +1,24 @@
 {
-  "$schema": "https://github.com/danilwhale/ignitron/raw/6fb693e31453d69ab6e1394bc284d025647a2f02/Metadata.schema.json",
-  "AssemblyFile": "Ignitron.Aluminium.dll",
-  "Id": "aluminium",
-  "Name": "Aluminium",
-  "Author": "danilwaffle",
-  "Version": "0.0.1",
-  "Description": "Bundled within mod loader API providing common events and utilities",
-  "Dependencies": [
+  "$schema": "https://raw.githubusercontent.com/danilwhale/ignitron/refs/heads/master/Metadata.schema.json",
+  "schema_version": 2,
+  "assembly_relative_path": "Ignitron.Aluminium.dll",
+  "id": "aluminium",
+  "display_name": "ignitron aluminium",
+  "contributors": [
     {
-      "Id": "allumeria",
-      "Version": "0.9.*"
+      "name": "danilwaffle",
+      "role": "developer"
     }
+  ],
+  "description": "provides common API to simplify mod development",
+  "version": "0.0.1",
+  "dependencies": [
+    {
+      "id": "allumeria",
+      "version": "0.9.10"
+    }
+  ],
+  "entrypoints": [
+    "Ignitron.Aluminium.AluminiumMod"
   ]
 }
