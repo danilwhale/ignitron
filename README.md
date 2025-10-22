@@ -19,9 +19,9 @@ done!
 ### for developers
 
 > [!CAUTION]
-> as of 0.9.4, you can ***NOT*** use Harmony patches or MonoMod in production environment.
+> as of 0.9.10, you can ***NOT*** use Harmony patches or MonoMod in production environment.
 > see https://github.com/MonoMod/MonoMod/issues/129 for more information.
-> hopefully, this will be resolved in steam playtest release.
+> hopefully, this *should* be resolved in 0.10
 >
 > as a workaround, you can do [configuration](#configuring) steps and run the game using
 > ```
@@ -33,8 +33,8 @@ done!
 > [!IMPORTANT]
 > you need to have [.NET SDK 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) installed!
 
-1. download [allumeria](https://unobtainablemelon.itch.io/allumeria) (modloader is targetted for 0.9.5, which is latest
-   as of 23-09-2025)
+1. download [allumeria](https://unobtainablemelon.itch.io/allumeria) (modloader is targetted for 0.9.10, which is latest
+   as of 22-10-2025)
 2. unpack it somewhere
 3. ***[install sfextract](https://github.com/Droppers/SingleFileExtractor?tab=readme-ov-file#install)***
    - `dotnet tool install -g sfextract` (if you're too lazy to click the link)

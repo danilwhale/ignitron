@@ -2,7 +2,7 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Ignitron.Loader.API.Versioning;
+namespace Ignitron.Loader.Metadata;
 
 public sealed class WildcardVersionJsonConverter : JsonConverter<WildcardVersion>
 {

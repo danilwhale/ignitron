@@ -1,5 +1,5 @@
 <Solution>
   <Project Path="Ignitron.Aluminium/Ignitron.Aluminium.csproj" />
-  <Project Path="Ignitron.Loader.API/Ignitron.Loader.API.csproj" />
   <Project Path="Ignitron.Loader/Ignitron.Loader.csproj" />
+  <Project Path="Ignitron.TestMod\Ignitron.TestMod.csproj" Type="Classic C#" />
 </Solution>

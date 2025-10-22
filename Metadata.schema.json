@@ -1,66 +1,97 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/danilwhale/ignitron/blob/master/Metadata.schema.json",
+  "$id": "https://raw.githubusercontent.com/danilwhale/ignitron/refs/heads/master/Metadata.schema.json",
   "title": "Ignitron mod metadata",
   "description": "Describes mod made for Ignitron",
   "type": "object",
   "properties": {
-    "AssemblyFile": {
+    "schema_version": {
+      "description": "Version of the schema used for the mod. Current value is '2'",
+      "type": "number"
+    },
+    "assembly_relative_path": {
       "description": "Relative path to the mod assembly file (e.g. 'ModMenu.dll')",
       "type": "string"
     },
-    "Id": {
-      "description": "Unique ID of the mod (e.g. 'mod_menu')",
+    "id": {
+      "description": "Unique ID of the mod",
       "type": "string"
     },
-    "Name": {
-      "description": "Display name of the mod (e.g. 'ModMenu')",
+    "display_name": {
+      "description": "Display name of the mod",
       "type": "string"
     },
-    "Author": {
-      "description": "Author/authors who worked on the mod (e.g. 'danilwaffle')",
-      "type": "string"
-    },
-    "Version": {
-      "description": "Version of the mod in 'Major.Minor.(Build).(Revision)' format (e.g. '1.0')",
-      "type": "string"
-    },
-    "Description": {
-      "description": "Description of the mod",
-      "type": "string"
-    },
-    "Dependencies": {
-      "description": "Dependencies required by the mod",
+    "contributors": {
+      "description": "People who contributed in development of the mod",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "Id": {
-            "description": "Unique ID of the dependency (e.g. 'allumeria')",
+          "name": {
+            "description": "Name of the contributor",
             "type": "string"
           },
-          "Version": {
-            "description": "Wildcard version of the dependency (e.g. '0.9.4', '0.9.*', '0.*.4', or '' for any version)",
+          "role": {
+            "description": "Role of the contributor (developer, artist, original developer, ...)",
             "type": "string"
-          },
-          "Optional": {
-            "description": "Whether this dependency is optional or mandatory. Default value is 'false'",
-            "type": "boolean"
           }
         },
         "required": [
-          "Id",
-          "Version"
+          "name"
         ]
+      }
+    },
+    "description": {
+      "description": "Description of the mod",
+      "type": "string"
+    },
+    "version": {
+      "description": "Version of the mod in 'Major.Minor(.Build.(Revision))' format",
+      "type": "string"
+    },
+    "dependencies": {
+      "description": "Dependencies used by the mod",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Mod ID of the dependency (e.g. 'allumeria')",
+            "type": "string"
+          },
+          "version": {
+            "description": "Wildcard version of the dependency (e.g. '0.9.4', '0.9.*', '0.*.4', or '' for any version)",
+            "type": "string"
+          },
+          "type": {
+            "description": "Type of the dependency. Default value is 'mandatory'",
+            "enum": ["mandatory", "optional", "recommended", "not_recommended", "incompatible"]
+          }
+        },
+        "required": [
+          "id",
+          "version"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "entrypoints": {
+      "description": "Names of types that implement the IModEntrypoint interface",
+      "type": "array",
+      "items": {
+        "type": "string"
       },
       "uniqueItems": true
     }
   },
   "required": [
-    "AssemblyFile",
-    "Id",
-    "Name",
-    "Version",
-    "Dependencies"
+    "schema_version",
+    "assembly_relative_path",
+    "id",
+    "display_name",
+    "contributors",
+    "version",
+    "dependencies",
+    "entrypoints"
   ]
 }
