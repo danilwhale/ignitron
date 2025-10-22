@@ -6,21 +6,54 @@ using Allumeria;
 
 namespace Ignitron.Loader;
 
+/// <summary>
+/// Represents the core of the mod loader
+/// </summary>
 public sealed partial class IgnitronLoader : IExternalLoader
 {
+    /// <summary>
+    /// Installed version of the mod loader
+    /// </summary>
     public static Version Version { get; } = new(0, 4, 0, 0);
+    
+    /// <summary>
+    /// Current instance of the mod loader
+    /// </summary>
+    /// <remarks>
+    /// This value is set once <see cref="IExternalLoader.Init"/> implementation has been invoked
+    /// </remarks>
     public static IgnitronLoader Instance { get; private set; } = null!;
 
     [GeneratedRegex(@"(\d+)\.(\d+)(?:\.(\d+))?(?:\.(\d+))?")]
     private static partial Regex VersionRegex();
 
+    /// <summary>
+    /// Version of the game installation
+    /// </summary>
     public Version GameVersion { get; private set; } = null!;
+    
+    /// <summary>
+    /// Absolute path to the directory with game executable
+    /// </summary>
     public string GamePath { get; private set; } = null!;
+    
+    /// <summary>
+    /// Absolute path to the directory where mods are installed, that is, "<see cref="GamePath"/>/mods/"
+    /// </summary>
     public string ModsPath { get; private set; } = null!;
+    
+    /// <summary>
+    /// Collections with mods that have been loaded from <see cref="ModsPath"/>
+    /// </summary>
     public IReadOnlyList<ModBox> Mods => _mods;
 
     private List<ModBox> _mods = null!;
 
+    /// <summary>
+    /// Determines whether a mod is loaded
+    /// </summary>
+    /// <param name="id">ID of a mod to locate</param>
+    /// <returns>true if mod is loaded; otherwise, false</returns>
     public bool IsModLoaded(ReadOnlySpan<char> id)
     {
         foreach (ModBox m in _mods)
@@ -32,6 +65,12 @@ public sealed partial class IgnitronLoader : IExternalLoader
         return false;
     }
 
+    /// <summary>
+    /// Gets the mod with the specified unique ID
+    /// </summary>
+    /// <param name="id">Unique ID of the mod</param>
+    /// <param name="mod">When this method returns, contains the mod with the specified unique ID, if the unique ID is found; otherwise, null</param>
+    /// <returns>true if the mod was found; otherwise, false</returns>
     public bool TryGetMod(ReadOnlySpan<char> id, [NotNullWhen(true)] out ModBox? mod)
     {
         foreach (ModBox m in _mods)

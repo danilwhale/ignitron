@@ -9,5 +9,5 @@ internal sealed class AllumeriaModMetadata : IModMetadata
     public string? Description => null;
     public Version Version => IgnitronLoader.Instance.GameVersion;
     public IEnumerable<IModDependency> Dependencies { get; } = [];
-    public IEnumerable<string>? Entrypoints { get; } = [];
+    public IEnumerable<string> Entrypoints { get; } = [];
 }

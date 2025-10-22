@@ -5,21 +5,51 @@ using System.Text.Json.Serialization;
 namespace Ignitron.Loader.Metadata;
 
 /// <summary>
-/// version struct that supports wildcards.
-/// for example, 1.* will be [1, null, null, null], * will be [null, null, null, null], 1.*.0 will be [1, null, 0, null]
+/// Represents a version filter defined using wildcards. Can be used for filtering <see cref="Version"/>
 /// </summary>
+/// <param name="major">Major build of the version, or <c>null</c> for any</param>
+/// <param name="minor">Minor build of the version, or <c>null</c> for any</param>
+/// <param name="patch">Patch build of the version, or <c>null</c> for any</param>
+/// <param name="revision">Revision build of the version, or <c>null</c> for any</param>
 [JsonConverter(typeof(WildcardVersionJsonConverter))]
 public readonly struct WildcardVersion(uint? major = null, uint? minor = null, uint? patch = null, uint? revision = null) 
     : IEquatable<WildcardVersion>, IEquatable<Version>, ISpanParsable<WildcardVersion>
 {
+    /// <summary>
+    /// Filter that accepts any version
+    /// </summary>
     public static readonly WildcardVersion Any = new();
     
-    public readonly uint? Major = major, Minor = minor, Patch = patch, Revision = revision;
+    /// <summary>
+    /// Major build of the version. <c>null</c> to accept version with any major build
+    /// </summary>
+    public readonly uint? Major = major;
+    
+    /// <summary>
+    /// Minor build of the version. <c>null</c> to accept version with any minor build
+    /// </summary>
+    public readonly uint? Minor = minor;
+    
+    /// <summary>
+    /// Patch build of the version. <c>null</c> to accept version with any patch build
+    /// </summary>
+    public readonly uint? Patch = patch;
+    
+    /// <summary>
+    /// Revision build of the version. <c>null</c> to accept version with any major build
+    /// </summary>
+    public readonly uint? Revision = revision;
 
+    /// <summary>
+    /// Initialises a new instance of the <see cref="WildcardVersion"/> class that accepts any version
+    /// </summary>
     public WildcardVersion() : this(major: null)
     {
     }
 
+    /// <summary>
+    /// Initialises a new instance of the <see cref="WildcardVersion"/> class that accepts versions using given components
+    /// </summary>
     public WildcardVersion(scoped ReadOnlySpan<uint?> components)
         : this(components[0], components[1], components[2], components[3])
     {
