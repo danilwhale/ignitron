@@ -10,7 +10,7 @@
 
     <!-- reference common stuff -->
     <ItemGroup>
-        <ProjectReference Include="$(MSBuildThisFileDirectory)..\Ignitron.Loader.API\Ignitron.Loader.API.csproj" Private="false"/>
+        <ProjectReference Include="$(MSBuildThisFileDirectory)..\Ignitron.Loader\Ignitron.Loader.csproj" Private="false"/>
     </ItemGroup>
 
     <PropertyGroup>
