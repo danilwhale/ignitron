@@ -14,6 +14,7 @@ internal sealed class ModResolver(IgnitronLoader loader)
     {
         // include allumeria by default
         _foundMods.Add(new ModBox(new AllumeriaModMetadata(), loader.GamePath));
+        _foundModIds.Add("allumeria");
 
         try
         {
