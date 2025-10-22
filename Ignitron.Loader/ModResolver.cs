@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using System.Text.Json;
 using Allumeria;
 using Ignitron.Loader.Metadata;
@@ -39,56 +40,95 @@ internal sealed class ModResolver(IgnitronLoader loader)
 
     private void CollectMods(string rootPath)
     {
-        foreach (string modRootPath in Directory.GetDirectories(rootPath))
+        foreach (string modRootPath in Directory.GetFileSystemEntries(rootPath))
         {
-            string metadataPath = Path.Join(modRootPath, "Metadata.json");
-            if (!File.Exists(metadataPath))
-            {
-                // not a mod directory
-                continue;
-            }
-
-            // deserialize metadata
-            using FileStream stream = File.OpenRead(metadataPath);
-            using JsonDocument metadataDoc = JsonDocument.Parse(stream);
-            
             IModMetadata metadata;
-            if (!metadataDoc.RootElement.TryGetProperty("schema_version", out JsonElement schemaVersionElement) ||
-                !schemaVersionElement.TryGetInt32(out int schemaVersion))
+            string? assemblyPath;
+            if (Directory.Exists(modRootPath))
             {
-                throw new InvalidOperationException("Invalid metadata definition");
-            }
+                // mod is stored inside a directory
+                string metadataPath = Path.Join(modRootPath, "Metadata.json");
+                if (!File.Exists(metadataPath))
+                {
+                    // not a mod directory
+                    continue;
+                }
 
-            if (schemaVersion == 2)
+                // deserialize metadata
+                using FileStream stream = File.OpenRead(metadataPath);
+                metadata = LoadAndValidateMetadata(stream);
+
+                assemblyPath = Path.Join(modRootPath, metadata.AssemblyRelativePath);
+                if (!File.Exists(assemblyPath))
+                {
+                    throw new FileNotFoundException($"Assembly file at '{assemblyPath}' doesn't exist");
+                }
+            }
+            else if (Path.GetExtension(modRootPath) is ".zip")
             {
-                metadata = metadataDoc.Deserialize<JsonV2ModMetadata>()!;
+                // mod is stored inside an archive
+                using ZipArchive zip = ZipFile.OpenRead(modRootPath);
+                ZipArchiveEntry? metadataEntry = zip.GetEntry("Metadata.json");
+                if (metadataEntry == null)
+                {
+                    // not a mod archive
+                    continue;
+                }
+
+                using Stream stream = metadataEntry.Open();
+                metadata = LoadAndValidateMetadata(stream);
+
+                if (zip.GetEntry(metadata.AssemblyRelativePath) == null)
+                {
+                    throw new FileNotFoundException($"Archive {modRootPath} doesn't contain assembly file at '{metadata.AssemblyRelativePath}'");
+                }
+
+                assemblyPath = null;
             }
             else
             {
-                throw new InvalidOperationException("Invalid schema version. Are you trying to run mod made for newer version?");
-            }
-            
-            if (metadata == null)
-            {
-                throw new InvalidOperationException($"Deserialized '{metadataPath}' is null");
-            }
-
-            // make sure mod hasn't been loaded before
-            if (_foundModIds.Contains(metadata.Id))
-            {
-                throw new InvalidOperationException($"'{metadata.Id}' has been duplicated!");
-            }
-
-            string assemblyPath = Path.Join(modRootPath, metadata.AssemblyRelativePath);
-            if (!File.Exists(assemblyPath))
-            {
-                throw new FileNotFoundException($"Assembly file at '{assemblyPath}' doesn't exist");
+                // unknown file
+                continue;
             }
 
             // include
             _foundMods.Add(new ModBox(metadata, modRootPath, assemblyPath));
             _foundModIds.Add(metadata.Id);
         }
+    }
+
+    private IModMetadata LoadAndValidateMetadata(Stream stream)
+    {
+        using JsonDocument metadataDoc = JsonDocument.Parse(stream);
+
+        IModMetadata metadata;
+        if (!metadataDoc.RootElement.TryGetProperty("schema_version", out JsonElement schemaVersionElement) ||
+            !schemaVersionElement.TryGetInt32(out int schemaVersion))
+        {
+            throw new InvalidOperationException("Invalid metadata definition");
+        }
+
+        if (schemaVersion == 2)
+        {
+            metadata = metadataDoc.Deserialize<JsonV2ModMetadata>()!;
+        }
+        else
+        {
+            throw new InvalidOperationException("Invalid schema version. Are you trying to run mod made for newer version?");
+        }
+
+        if (metadata == null)
+        {
+            throw new InvalidOperationException("Deserialized metadata file is null");
+        }
+
+        // make sure mod hasn't been loaded before
+        if (_foundModIds.Contains(metadata.Id))
+        {
+            throw new InvalidOperationException($"'{metadata.Id}' has been duplicated!");
+        }
+
+        return metadata;
     }
 
     private void ResolveDependencies()

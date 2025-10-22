@@ -1,6 +1,9 @@
+using System.Buffers;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.IO.Compression;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Text.RegularExpressions;
 using Allumeria;
 
@@ -15,7 +18,7 @@ public sealed partial class IgnitronLoader : IExternalLoader
     /// Installed version of the mod loader
     /// </summary>
     public static Version Version { get; } = new(0, 4, 0, 0);
-    
+
     /// <summary>
     /// Current instance of the mod loader
     /// </summary>
@@ -31,17 +34,17 @@ public sealed partial class IgnitronLoader : IExternalLoader
     /// Version of the game installation
     /// </summary>
     public Version GameVersion { get; private set; } = null!;
-    
+
     /// <summary>
     /// Absolute path to the directory with game executable
     /// </summary>
     public string GamePath { get; private set; } = null!;
-    
+
     /// <summary>
     /// Absolute path to the directory where mods are installed, that is, "<see cref="GamePath"/>/mods/"
     /// </summary>
     public string ModsPath { get; private set; } = null!;
-    
+
     /// <summary>
     /// Collections with mods that have been loaded from <see cref="ModsPath"/>
     /// </summary>
@@ -104,11 +107,11 @@ public sealed partial class IgnitronLoader : IExternalLoader
 
             _mods = new ModResolver(this).Resolve(ModsPath);
             InitialiseMods();
-            
+
             Logger.Init("Loaded mod(s):");
             foreach (ModBox mod in _mods)
             {
-                Logger.Init($" - {mod.Metadata.Id} {mod.Metadata.Version} ({mod.AssemblyPath})");
+                Logger.Init($" - {mod.Metadata.Id} {mod.Metadata.Version} ({mod.AssemblyPath ?? mod.RootPath})");
             }
         }
         catch (Exception ex)
@@ -131,14 +134,34 @@ public sealed partial class IgnitronLoader : IExternalLoader
         {
             try
             {
-                IEnumerable<string>? entrypointNames = mod.Metadata.Entrypoints;
+                IEnumerable<string> entrypointNames = mod.Metadata.Entrypoints;
                 if (!entrypointNames.Any())
                 {
                     Logger.Init($"'{mod.Metadata.Id}' doesn't have any entrypoints defined, skipping");
                     continue;
                 }
 
-                Assembly ass = Assembly.LoadFrom(mod.AssemblyPath);
+                using ModAssemblyLoadContext ctx = new(mod);
+                Assembly ass;
+                if (mod.AssemblyPath == null)
+                {
+                    // load from archive
+                    ZipArchiveEntry assemblyEntry = ctx.Archive!.GetEntry(mod.Metadata.AssemblyRelativePath)!;
+                    
+                    // now we need to decompress the assembly
+                    using Stream entryStream = assemblyEntry.Open();
+                    using MemoryStream decompStream = new();
+                    entryStream.CopyTo(decompStream);
+                    decompStream.Position = 0;
+                    
+                    // finally we can load it
+                    ass = ctx.LoadFromStream(decompStream);
+                }
+                else
+                {
+                    // load from directory
+                    ass = ctx.LoadFromAssemblyPath(mod.AssemblyPath);
+                }
 
                 IEnumerable<IModEntrypoint> entrypoints = ass.GetExportedTypes()
                     .Where(t => t.IsAssignableTo(typeof(IModEntrypoint)))
