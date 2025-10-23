@@ -7,10 +7,20 @@ namespace Ignitron.Loader;
 internal sealed class ModAssemblyLoadContext(ModBox mod) : AssemblyLoadContext, IDisposable
 {
     public readonly ZipArchive? Archive = mod.AssemblyPath == null ? ZipFile.OpenRead(mod.RootPath) : null;
-    private readonly AssemblyDependencyResolver? _resolver = mod.AssemblyPath != null ? new AssemblyDependencyResolver(mod.RootPath) : null;
+    private readonly AssemblyDependencyResolver? _resolver = mod.AssemblyPath != null ? new AssemblyDependencyResolver(mod.AssemblyPath) : null;
 
     protected override Assembly? Load(AssemblyName assemblyName)
     {
+        // do NOT load already loaded assembles
+        // if we do, everything is FUCKED
+        foreach (Assembly ass in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            if (ass.FullName.Equals(assemblyName.FullName, StringComparison.Ordinal))
+            {
+                return null;
+            }
+        }
+        
         // if mod is an archive we need to load assemblies from it
         if (mod.AssemblyPath == null)
         {
