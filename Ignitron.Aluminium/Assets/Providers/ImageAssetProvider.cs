@@ -6,10 +6,14 @@ namespace Ignitron.Aluminium.Assets.Providers;
 public sealed class ImageAssetProvider : IAssetProvider<ImageResult, ImageAssetDescriptor>
 {
     public static ImageAssetProvider Default { get; } = new();
-    
-    public ImageResult Create(string assetName, string rootPath, ImageAssetDescriptor descriptor)
+
+    public ImageResult Create(AssetManager assets, string assetName, ImageAssetDescriptor descriptor)
     {
-        using FileStream stream = File.OpenRead(Path.Join(rootPath, assetName));
+        using Stream stream = assets.Open(assetName);
+        using MemoryStream ms = new();
+        stream.CopyTo(ms);
+        ms.Position = 0;
+
         return ImageResult.FromStream(stream, descriptor.RequiredComponents);
     }
 }

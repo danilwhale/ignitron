@@ -7,5 +7,5 @@ public interface IAssetProvider<out TAsset, in TDescriptor>
     where TDescriptor : IAssetDescriptor<TAsset>
 {
     [return: NotNull]
-    TAsset Create(string assetName, string rootPath, TDescriptor descriptor);
+    TAsset Create(AssetManager assets, string assetName, TDescriptor descriptor);
 }

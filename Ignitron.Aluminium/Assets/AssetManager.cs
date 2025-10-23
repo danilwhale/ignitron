@@ -1,10 +1,11 @@
+using System.IO.Compression;
 using Ignitron.Aluminium.Assets.Descriptors;
 using Ignitron.Aluminium.Assets.Providers;
 using Ignitron.Loader;
 
 namespace Ignitron.Aluminium.Assets;
 
-public sealed class AssetManager(string rootPath)
+public sealed class AssetManager : IDisposable
 {
     public const string RootDirectory = "res";
 
@@ -16,7 +17,35 @@ public sealed class AssetManager(string rootPath)
     public const string TexturesDirectory = "textures";
     public const string TranslationsDirectory = "translations";
 
-    public string RootPath { get; set; } = rootPath;
+    private ZipArchive? _archive;
+    private string _rootPath;
+
+    public bool IsVirtual => _archive != null;
+
+    public string RootPath
+    {
+        get => _rootPath;
+        set
+        {
+            _archive?.Dispose();
+
+            if (value.Contains(".zip", StringComparison.OrdinalIgnoreCase))
+            {
+                // trim until we hit .zip
+                ReadOnlySpan<char> zipPath = value;
+                while (!(zipPath = Path.GetDirectoryName(zipPath)).EndsWith(".zip")) ;
+                
+                // load archive
+                _archive = ZipFile.OpenRead(new string(zipPath));
+                
+                // trim zip path from root path
+                value = value[zipPath.Length..].TrimStart('/', '\\' /* we trim all path chars because you can never trust the user */);
+            }
+            else _archive = null;
+
+            _rootPath = value;
+        }
+    }
 
     private readonly Dictionary<string, object> _assets = [];
 
@@ -28,6 +57,31 @@ public sealed class AssetManager(string rootPath)
     public AssetManager(ModBox mod)
         : this(Path.Join(mod.RootPath, RootDirectory))
     {
+    }
+
+    public AssetManager(string rootPath)
+    {
+        RootPath = rootPath;
+    }
+
+    public Stream Open(string assetPath)
+    {
+        if (string.IsNullOrWhiteSpace(RootPath))
+        {
+            throw new InvalidOperationException($"{nameof(RootPath)} isn't set or is empty");
+        }
+
+        if (_archive != null)
+        {
+            // open stream from an archive
+            return _archive.GetEntry(Path.Join(RootPath, assetPath).Replace(Path.DirectorySeparatorChar, '/'))?.Open()
+                   ?? throw new FileNotFoundException($"Asset '{assetPath}' wasn't found", assetPath);
+        }
+        else
+        {
+            // open stream from file system
+            return File.OpenRead(Path.Join(RootPath, assetPath));
+        }
     }
 
     public T Load<T, TDescriptor>(string assetName, TDescriptor descriptor, IAssetProvider<T, TDescriptor> provider)
@@ -44,7 +98,7 @@ public sealed class AssetManager(string rootPath)
             return (T)cache;
         }
 
-        T asset = provider.Create(assetName, RootPath, descriptor);
+        T asset = provider.Create(this, assetName, descriptor);
         _assets[assetName] = asset;
         return asset;
     }
@@ -62,8 +116,13 @@ public sealed class AssetManager(string rootPath)
             return (T)cache;
         }
 
-        T asset = provider.Create(assetName, RootPath);
+        T asset = provider.Create(this, assetName);
         _assets[assetName] = asset;
         return asset;
+    }
+
+    public void Dispose()
+    {
+        _archive?.Dispose();
     }
 }

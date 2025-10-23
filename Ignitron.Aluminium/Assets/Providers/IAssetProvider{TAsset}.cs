@@ -2,8 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Ignitron.Aluminium.Assets.Providers;
 
-public interface IAssetProvider<TAsset>
+public interface IAssetProvider<out TAsset>
 {
     [return: NotNull]
-    TAsset Create(string assetName, string rootPath);
+    TAsset Create(AssetManager assets, string assetName);
 }
