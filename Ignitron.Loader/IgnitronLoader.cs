@@ -134,8 +134,8 @@ public sealed partial class IgnitronLoader : IExternalLoader
         {
             try
             {
-                IEnumerable<string> entrypointNames = mod.Metadata.Entrypoints;
-                if (!entrypointNames.Any())
+                List<string> entrypointNames = mod.Metadata.Entrypoints.ToList();
+                if (entrypointNames.Count == 0)
                 {
                     Logger.Init($"'{mod.Metadata.Id}' doesn't have any entrypoints defined, skipping");
                     continue;
@@ -163,8 +163,8 @@ public sealed partial class IgnitronLoader : IExternalLoader
                     ass = ctx.LoadFromAssemblyPath(mod.AssemblyPath);
                 }
 
-                IEnumerable<IModEntrypoint> entrypoints = ass.GetExportedTypes()
-                    .Where(t => t.IsAssignableTo(typeof(IModEntrypoint)))
+                IEnumerable<IModEntrypoint> entrypoints = entrypointNames
+                    .Select(e => ass.GetType(e, true)!)
                     .Select(t => (IModEntrypoint)Activator.CreateInstance(t)!);
 
                 foreach (IModEntrypoint entrypoint in entrypoints)
