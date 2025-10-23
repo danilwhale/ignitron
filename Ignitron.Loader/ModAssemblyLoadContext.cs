@@ -17,7 +17,7 @@ internal sealed class ModAssemblyLoadContext(ModBox mod) : AssemblyLoadContext, 
         {
             if (ass.FullName.Equals(assemblyName.FullName, StringComparison.Ordinal))
             {
-                return null;
+                return ass;
             }
         }
         
