@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace Ignitron.Loader.Metadata.Internal;
+namespace Ignitron.Loader.Metadata.Components;
 
 internal sealed class HarmonyModMetadata : IModMetadata
 {

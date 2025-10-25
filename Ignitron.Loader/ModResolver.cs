@@ -3,7 +3,7 @@ using System.Text.Json;
 using Allumeria;
 using HarmonyLib;
 using Ignitron.Loader.Metadata;
-using Ignitron.Loader.Metadata.Internal;
+using Ignitron.Loader.Metadata.Components;
 using Ignitron.Loader.Metadata.Json;
 
 namespace Ignitron.Loader;
