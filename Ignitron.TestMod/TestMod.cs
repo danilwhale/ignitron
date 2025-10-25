@@ -9,7 +9,7 @@ public sealed class TestMod : IModEntrypoint
     public void Main(ModBox box)
     {
         Logger.Info($"mod is installed at {box.RootPath}");
-        Harmony harmony = new("danilwaffle.Ignitron.TestMod");
+        Harmony harmony = new("danilwhale.Ignitron.TestMod");
         harmony.PatchAll();
     }
 }

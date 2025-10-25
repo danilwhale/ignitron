@@ -107,7 +107,7 @@ public sealed partial class IgnitronLoader : IExternalLoader
             Game.VERSION = $"{Game.VERSION}/ignitron {Version}";
 
             // inject our patches
-            Harmony harmony = new("danilwaffle.Ignitron");
+            Harmony harmony = new("danilwhale.Ignitron");
             harmony.PatchAll();
 
             GamePath = Directory.GetCurrentDirectory(); // working directory should be the game directory
