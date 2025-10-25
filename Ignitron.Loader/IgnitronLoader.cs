@@ -98,8 +98,8 @@ public sealed partial class IgnitronLoader : IExternalLoader
             GameVersion = new Version(
                 int.Parse(versionMatch.Groups[1].ValueSpan),
                 int.Parse(versionMatch.Groups[2].ValueSpan),
-                versionMatch.Groups.Count > 4 ? int.Parse(versionMatch.Groups[3].ValueSpan) : 0,
-                versionMatch.Groups.Count > 5 ? int.Parse(versionMatch.Groups[4].ValueSpan) : 0
+                versionMatch.Groups.Count > 5 ? int.Parse(versionMatch.Groups[3].ValueSpan) : 0,
+                versionMatch.Groups.Count > 6 ? int.Parse(versionMatch.Groups[4].ValueSpan) : 0
             );
 
             GamePath = Directory.GetCurrentDirectory(); // working directory should be the game directory
