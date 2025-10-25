@@ -18,6 +18,10 @@
       "version": "0.10"
     },
     {
+      "id": "harmony",
+      "version": "2.*"
+    },
+    {
       "id": "shitfuck",
       "version": "0.69.840",
       "type": "recommended"
