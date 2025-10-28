@@ -1,8 +1,8 @@
-namespace Ignitron.Loader.Metadata;
+namespace Ignitron.Loader.Metadata.Components;
 
 internal sealed class AllumeriaModMetadata : IModMetadata
 {
-    public string AssemblyRelativePath => "Allumeria.dll"; // NOTE: this will be correct as of 0.10
+    public string AssemblyRelativePath => "Allumeria.dll";
     public string Id => "allumeria";
     public string DisplayName => "Allumeria";
     public IEnumerable<IModContributor> Contributors { get; } = [new ModContributor("unomelon", "Developer")];

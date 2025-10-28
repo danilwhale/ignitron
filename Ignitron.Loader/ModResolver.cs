@@ -1,7 +1,9 @@
 using System.IO.Compression;
 using System.Text.Json;
 using Allumeria;
+using HarmonyLib;
 using Ignitron.Loader.Metadata;
+using Ignitron.Loader.Metadata.Components;
 using Ignitron.Loader.Metadata.Json;
 
 namespace Ignitron.Loader;
@@ -13,9 +15,10 @@ internal sealed class ModResolver(IgnitronLoader loader)
 
     public List<ModBox> Resolve(string rootPath)
     {
-        // include allumeria by default
-        _foundMods.Add(new ModBox(new AllumeriaModMetadata(), loader.GamePath));
-        _foundModIds.Add("allumeria");
+        // include components by default
+        StoreMod(new ModBox(new AllumeriaModMetadata(), loader.GamePath));
+        StoreMod(new ModBox(new IgnitronModMetadata(), loader.ModsPath));
+        StoreMod(new ModBox(new HarmonyModMetadata(), loader.ModsPath));
 
         try
         {
@@ -36,6 +39,12 @@ internal sealed class ModResolver(IgnitronLoader loader)
         }
 
         return _foundMods;
+    }
+
+    private void StoreMod(ModBox mod)
+    {
+        _foundMods.Add(mod);
+        _foundModIds.Add(mod.Metadata.Id);
     }
 
     private void CollectMods(string rootPath)

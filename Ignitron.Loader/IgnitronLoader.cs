@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.Loader;
 using System.Text.RegularExpressions;
 using Allumeria;
+using HarmonyLib;
 
 namespace Ignitron.Loader;
 
@@ -17,7 +18,7 @@ public sealed partial class IgnitronLoader : IExternalLoader
     /// <summary>
     /// Installed version of the mod loader
     /// </summary>
-    public static Version Version { get; } = new(0, 4, 0, 0);
+    public static Version Version { get; } = new(0, 4, 0);
 
     /// <summary>
     /// Current instance of the mod loader
@@ -98,9 +99,16 @@ public sealed partial class IgnitronLoader : IExternalLoader
             GameVersion = new Version(
                 int.Parse(versionMatch.Groups[1].ValueSpan),
                 int.Parse(versionMatch.Groups[2].ValueSpan),
-                versionMatch.Groups.Count > 4 ? int.Parse(versionMatch.Groups[3].ValueSpan) : 0,
-                versionMatch.Groups.Count > 5 ? int.Parse(versionMatch.Groups[4].ValueSpan) : 0
+                versionMatch.Groups.Count > 5 ? int.Parse(versionMatch.Groups[3].ValueSpan) : 0,
+                versionMatch.Groups.Count > 6 ? int.Parse(versionMatch.Groups[4].ValueSpan) : 0
             );
+
+            // leave loader watermark
+            Game.VERSION = $"{Game.VERSION}/ignitron {Version}";
+
+            // inject our patches
+            Harmony harmony = new("danilwhale.Ignitron");
+            harmony.PatchAll();
 
             GamePath = Directory.GetCurrentDirectory(); // working directory should be the game directory
             ModsPath = Path.Join(GamePath, "mods");

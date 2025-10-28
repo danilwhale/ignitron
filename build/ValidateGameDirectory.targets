@@ -7,13 +7,5 @@
         <Error
                 Text="Specified game directory doesn't exist: '$(GameDirectory)'!"
                 Condition="!Exists($(GameDirectory))"/>
-
-        <!-- validate UnpackedGameDirectory property -->
-        <Error
-                Text="Directory with unpacked game assemblies hasn't been specified! Specify it using '&lt;UnpackedGameDirectory&gt;[UNPACKED_GAME_DIR]&lt;/UnpackedGameDirectory&gt;' in PropertyGroup of your project."
-                Condition="'$(UnpackedGameDirectory)' == ''"/>
-        <Error
-                Text="Specified directory with unpacked game assemblies doesn't exist: '$(UnpackedGameDirectory)'!"
-                Condition="!Exists($(UnpackedGameDirectory))"/>
     </Target>
 </Project>

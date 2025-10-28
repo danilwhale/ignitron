@@ -6,7 +6,7 @@
   "display_name": "Test Mod",
   "contributors": [
     {
-      "name": "danilwaffle",
+      "name": "danilwhale",
       "role": "developer"
     }
   ],
@@ -15,7 +15,11 @@
   "dependencies": [
     {
       "id": "allumeria",
-      "version": "0.9"
+      "version": "0.10"
+    },
+    {
+      "id": "harmony",
+      "version": "2.*"
     },
     {
       "id": "shitfuck",
