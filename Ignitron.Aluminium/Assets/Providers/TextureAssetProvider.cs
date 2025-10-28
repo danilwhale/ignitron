@@ -13,7 +13,7 @@ public sealed class TextureAssetProvider : IAssetProvider<Texture, TextureAssetD
     public Texture Create(AssetManager assets, string assetName, TextureAssetDescriptor descriptor)
     {
         Texture texture = new(GL.GenTexture());
-        texture.Use();
+        GL.BindTexture(TextureTarget.Texture2D, texture.id);
 
         if (descriptor.Flip) StbImage.stbi_set_flip_vertically_on_load(1);
         else StbImage.stbi_set_flip_vertically_on_load(0);

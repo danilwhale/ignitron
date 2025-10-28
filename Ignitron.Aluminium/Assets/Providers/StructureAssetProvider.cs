@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Allumeria.Blocks.Blocks;
 using Allumeria.Blocks.Structures;
 using Allumeria.DataManagement;
@@ -21,7 +22,7 @@ public sealed class StructureAssetProvider : IAssetProvider<Structure>
         ListTag rootTag = new("root");
         rootTag.ReadBytes(binaryReader);
 
-        UnsafeAccessors.GetStructurePalette(structure) = new BlockPalette();
+            GetStructurePalette(structure) = new BlockPalette();
         ListTag? infoTag = (ListTag?)rootTag.FindTag("info");
         ListTag? paletteTag = (ListTag?)rootTag.FindTag("palette");
 
@@ -34,7 +35,7 @@ public sealed class StructureAssetProvider : IAssetProvider<Structure>
 
         if (paletteTag != null)
         {
-            UnsafeAccessors.ReadBlockPaletteBytes(UnsafeAccessors.GetStructurePalette(structure), paletteTag, null, readStrings: true);
+            GetStructurePalette(structure).ReadBytes(paletteTag, null, readStrings: true);
         }
 
         // ReSharper disable PossibleInvalidCastExceptionInForeachLoop
@@ -43,7 +44,7 @@ public sealed class StructureAssetProvider : IAssetProvider<Structure>
         {
             foreach (ListTag latchPointTag in ((ListTag)latchPoints).tags.Values)
             {
-                LatchPoint latchPoint = UnsafeAccessors.GetLatchPointFromBytes(null, latchPointTag);
+                LatchPoint latchPoint = LatchPoint.GetFromBytes(latchPointTag);
                 structure.latchPoints.Add(latchPoint);
             }
         }
@@ -52,7 +53,7 @@ public sealed class StructureAssetProvider : IAssetProvider<Structure>
         {
             foreach (ListTag markerTag in ((ListTag)tags).tags.Values)
             {
-                Marker marker = UnsafeAccessors.GetMarkerFromBytes(null, markerTag);
+                Marker marker = Marker.GetFromBytes(markerTag);
                 structure.markers.Add(marker);
             }
         }
@@ -62,5 +63,8 @@ public sealed class StructureAssetProvider : IAssetProvider<Structure>
         binaryReader.Close();
 
         return structure;
+        
+        [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "palette")]
+        static extern ref BlockPalette GetStructurePalette(Structure s);
     }
 }
