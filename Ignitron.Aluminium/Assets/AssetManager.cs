@@ -7,6 +7,8 @@ namespace Ignitron.Aluminium.Assets;
 
 public sealed class AssetManager : IDisposable
 {
+    private readonly record struct AssetKey(Type Type, string Path);
+
     public const string RootDirectory = "res";
 
     // some common subdirectories for assets
@@ -34,10 +36,10 @@ public sealed class AssetManager : IDisposable
                 // trim until we hit .zip
                 ReadOnlySpan<char> zipPath = value;
                 while (!(zipPath = Path.GetDirectoryName(zipPath)).EndsWith(".zip")) ;
-                
+
                 // load archive
                 _archive = ZipFile.OpenRead(new string(zipPath));
-                
+
                 // trim zip path from root path
                 value = value[zipPath.Length..].TrimStart('/', '\\' /* we trim all path chars because you can never trust the user */);
             }
@@ -47,7 +49,7 @@ public sealed class AssetManager : IDisposable
         }
     }
 
-    private readonly Dictionary<string, object> _assets = [];
+    private readonly Dictionary<AssetKey, object> _assets = [];
 
     public AssetManager()
         : this(string.Empty)
@@ -93,13 +95,14 @@ public sealed class AssetManager : IDisposable
         }
 
         ArgumentException.ThrowIfNullOrWhiteSpace(assetName);
-        if (_assets.TryGetValue(assetName, out object? cache))
+        AssetKey key = new(typeof(T), assetName);
+        if (_assets.TryGetValue(key, out object? cache))
         {
             return (T)cache;
         }
 
         T asset = provider.Create(this, assetName, descriptor);
-        _assets[assetName] = asset;
+        _assets[key] = asset;
         return asset;
     }
 
@@ -111,13 +114,14 @@ public sealed class AssetManager : IDisposable
         }
 
         ArgumentException.ThrowIfNullOrWhiteSpace(assetName);
-        if (_assets.TryGetValue(assetName, out object? cache))
+        AssetKey key = new(typeof(T), assetName);
+        if (_assets.TryGetValue(key, out object? cache))
         {
             return (T)cache;
         }
 
         T asset = provider.Create(this, assetName);
-        _assets[assetName] = asset;
+        _assets[key] = asset;
         return asset;
     }
 
