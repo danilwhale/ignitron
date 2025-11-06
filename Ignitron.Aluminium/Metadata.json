@@ -16,6 +16,10 @@
     {
       "id": "allumeria",
       "version": "0.11"
+    },
+    {
+      "id": "harmony",
+      "version": "2.*"
     }
   ],
   "entrypoints": [
