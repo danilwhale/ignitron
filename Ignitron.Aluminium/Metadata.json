@@ -15,7 +15,7 @@
   "dependencies": [
     {
       "id": "allumeria",
-      "version": "0.10"
+      "version": "0.11"
     }
   ],
   "entrypoints": [
