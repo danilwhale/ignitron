@@ -7,12 +7,12 @@ modloader for [allumeria](https://unobtainablemelon.itch.io/allumeria)
 #### download artifact
 
 go to [Releases page](https://github.com/danilwhale/ignitron/releases/), find version that corresponds your game version
-(all releases have their target version specified in parenthesis: `0.4.0 (0.10)`).
+(all releases have their target version specified in parenthesis: `0.4.0 (0.10-0.11)`).
 now look for `Ignitron.Loader.zip` link, under version changelog, and click on it
 
 #### actually installing
 
-make `mods` folder in the game directory, and unpack `Ignitron.Loader.zip` into it.
+make `mods` folder in the game directory and unpack `Ignitron.Loader.zip` into it.
 
 done!
 
@@ -30,9 +30,8 @@ done!
 > [!IMPORTANT]
 > you need to have [.NET SDK 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) installed!
 
-1. get and download [allumeria](https://store.steampowered.com/app/3516590/Allumeria/) (modloader is targetted for 0.10,
-   which is latest
-   as of 25-10-2025)
+1. get and download [allumeria](https://store.steampowered.com/app/3516590/Allumeria/) (modloader is targetted for 0.11,
+   which is latest as of 06-11-2025)
 2. set environment variable `ALLUMERIA_GAME_DIR` to game installation directory
 
 > [!TIP]
