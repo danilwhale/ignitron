@@ -1,4 +1,3 @@
-using Ignitron.Aluminium.Assets.Descriptors;
 using Ignitron.Aluminium.Atlases;
 
 namespace Ignitron.Aluminium.Assets.Providers;
@@ -14,6 +13,6 @@ public sealed class SpriteAssetProvider : IAssetProvider<ImageSprite>
         stream.CopyTo(ms);
         ms.Position = 0;
 
-        return ImageSprite.FromStream(stream);
+        return ImageSprite.FromStream(ms);
     }
 }
