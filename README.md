@@ -18,20 +18,15 @@ done!
 
 ### for developers
 
-> [!CAUTION]
-> ***until 0.10***, you can ***NOT*** use Harmony patches or MonoMod in production environment.
-> see https://github.com/MonoMod/MonoMod/issues/129 for more information.
->
-> go [here](https://github.com/danilwhale/ignitron/blob/7a70196e36a65ebd7c7378ba54ad2c6dd738d1f3/README.md) to view
-> steps for pre-0.10 setup
+> [!IMPORTANT]
+> since 0.5.0, you **CAN NOT** use modloader with versions before 0.12 or MP TEST due to upgrade to .NET 10.0 from .NET 9.0
 
 #### workspace configuration
 
 > [!IMPORTANT]
-> you need to have [.NET SDK 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) installed!
+> you need to have [.NET SDK **10.0**](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) installed!
 
-1. get and download [allumeria](https://store.steampowered.com/app/3516590/Allumeria/) (modloader is targetted for 0.11,
-   which is latest as of 06-11-2025)
+1. get and download [allumeria](https://store.steampowered.com/app/3516590/Allumeria/) (modloader is targetted for MP TEST, which is in closed beta as of 2025-11-28)
 2. set environment variable `ALLUMERIA_GAME_DIR` to game installation directory
 
 > [!TIP]
