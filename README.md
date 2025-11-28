@@ -14,12 +14,13 @@ now look for `Ignitron.Loader.zip` link, under version changelog, and click on i
 
 make `mods` folder in the game directory and unpack `Ignitron.Loader.zip` into it.
 
-done!
-
 ### for developers
 
-> [!IMPORTANT]
+> [!CAUTION]
 > since 0.5.0, you **CAN NOT** use modloader with versions before 0.12 or MP TEST due to upgrade to .NET 10.0 from .NET 9.0
+
+> [!IMPORTANT]
+> `MP TEST vX` versions are parsed as `0.12.0.X`
 
 #### workspace configuration
 
