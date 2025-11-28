@@ -18,7 +18,7 @@ public sealed partial class IgnitronLoader : IExternalLoader
     /// <summary>
     /// Installed version of the mod loader
     /// </summary>
-    public static Version Version { get; } = new(0, 4, 0);
+    public static Version Version { get; } = new(0, 5, 0);
 
     /// <summary>
     /// Current instance of the mod loader
