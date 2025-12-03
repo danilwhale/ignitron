@@ -12,10 +12,6 @@
         <CopyToGameDirectory Condition="'$(Configuration)' == 'Debug'">true</CopyToGameDirectory>
     </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Lib.Harmony" Version="2.4.1" />
-    </ItemGroup>
-
     <Import Project="..\build\Mod.targets"/>
 
 </Project>
