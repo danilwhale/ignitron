@@ -4,14 +4,17 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <CopyToGameDirectory Condition="'$(Configuration)' == 'Debug'">true</CopyToGameDirectory>
-    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" />
+    </ItemGroup>
 
-    <Import Project="..\build\Mod.targets"/>
-
+    <Import Project="$(MSBuildThisFileDirectory)..\build\CommonAssemblies.props"/>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="Loader"/>
+    </ItemGroup>
+    
 </Project>

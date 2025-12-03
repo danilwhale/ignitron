@@ -1,5 +1,6 @@
 <Project>
     <PropertyGroup>
         <GameDirectory>$(ALLUMERIA_GAME_DIR)</GameDirectory>
+        <HarmonyVersion>2.4.1</HarmonyVersion>
     </PropertyGroup>
 </Project>

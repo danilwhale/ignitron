@@ -1,7 +1,6 @@
 using System.IO.Compression;
 using Ignitron.Aluminium.Assets.Descriptors;
 using Ignitron.Aluminium.Assets.Providers;
-using Ignitron.Loader;
 
 namespace Ignitron.Aluminium.Assets;
 
@@ -53,11 +52,6 @@ public sealed class AssetManager : IDisposable
 
     public AssetManager()
         : this(string.Empty)
-    {
-    }
-
-    public AssetManager(ModBox mod)
-        : this(Path.Join(mod.RootPath, RootDirectory))
     {
     }
 

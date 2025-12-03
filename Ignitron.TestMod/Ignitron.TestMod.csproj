@@ -10,6 +10,14 @@
         <CopyToGameDirectory Condition="'$(Configuration)' == 'Debug'">true</CopyToGameDirectory>
     </PropertyGroup>
 
+    <ItemGroup>
+        <Content Include="res\**" CopyToOutputDirectory="PreserveNewest"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Ignitron.Aluminium\Ignitron.Aluminium.csproj" />
+    </ItemGroup>
+
     <Import Project="..\build\Mod.targets"/>
 
 </Project>
