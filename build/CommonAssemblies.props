@@ -22,6 +22,11 @@
 
         <!-- soloud -->
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'SoLoudLib.dll'))" Private="false"/>
+        <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'NVorbis.dll'))" Private="false"/>
+        
+        <!-- steamworks -->
+        <!-- TODO: use .Posix for non-Windows when needed -->
+        <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'Facepunch.Steamworks.Win64.dll'))" Private="false"/>
 
         <!-- sql -->
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'SQLitePCLRaw.batteries_v2.dll'))" Private="false"/>
