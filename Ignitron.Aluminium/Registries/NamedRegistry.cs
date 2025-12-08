@@ -1,42 +1,51 @@
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Ignitron.Aluminium.Registries;
 
 public sealed class NamedRegistry<TValue> : IEnumerable<KeyValuePair<string, TValue>>
+    where TValue : notnull
 {
-    private readonly Dictionary<string, TValue> _values = [];
+    private readonly Dictionary<string, TValue> _byName = [];
+    private readonly Dictionary<TValue, string> _byValue = [];
 
-    public event Action<string, TValue>? Registered;
+    public event Action<NamedRegistry<TValue>, string, TValue>? Registered;
 
-    public bool TryGetValue(string key, out TValue? value)
+    public bool TryGetValue(string key, [NotNullWhen(true)] out TValue? value)
     {
-        return _values.TryGetValue(key.ToLowerInvariant(), out value);
+        return _byName.TryGetValue(key.ToLowerInvariant(), out value);
+    }
+
+    public bool TryGetName(TValue value, [NotNullWhen(true)] out string? key)
+    {
+        return _byValue.TryGetValue(value, out key);
     }
 
     public void Register(string key, TValue value)
     {
         key = key.ToLowerInvariant();
-        _values.Add(key, value);
-        Registered?.Invoke(key, value);
+        _byName.Add(key, value);
+        _byValue.Add(value, key);
+        Registered?.Invoke(this, key, value);
     }
 
     public bool TryRegister(string key, TValue value)
     {
         key = key.ToLowerInvariant();
-        if (_values.TryAdd(key, value))
+        if (_byName.TryAdd(key, value) && _byValue.TryAdd(value, key))
         {
-            Registered?.Invoke(key, value);
+            Registered?.Invoke(this, key, value);
             return true;
         }
 
         return false;
     }
 
-    public TValue this[string key] => _values[key.ToLowerInvariant()];
+    public TValue this[string key] => _byName[key.ToLowerInvariant()];
 
     public IEnumerator<KeyValuePair<string, TValue>> GetEnumerator()
     {
-        return _values.GetEnumerator();
+        return _byName.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
