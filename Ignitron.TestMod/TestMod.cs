@@ -27,7 +27,7 @@ public sealed class TestMod : IModEntrypoint
         AssetManager ass = new(Path.Join(box.RootPath, AssetManager.RootDirectory));
         AluminiumRegistries.Translators.Register(box.Metadata.Id, new TestTranslator(ass));
 
-        AllumeriaEvents.BeforeLoaded += _ =>
+        ClientLoopEvents.Loading += _ =>
         {
             _awaTexture = ass.Load(
                 Path.Join(AssetManager.TexturesDirectory, "awa.png"),
@@ -35,7 +35,7 @@ public sealed class TestMod : IModEntrypoint
                 TextureAssetProvider.Default);
         };
 
-        AllumeriaEvents.Loaded += _ =>
+        ClientLoopEvents.Loaded += _ =>
         {
             ImageSprite sprite = ass.Load(Path.Join(AssetManager.TexturesDirectory, "awa.png"), SpriteAssetProvider.Default);
             BlockExtensions.Add(() => new Block("mao")
@@ -49,7 +49,7 @@ public sealed class TestMod : IModEntrypoint
                 .SetCategory([ItemCategory.technical]));
         };
 
-        AllumeriaEvents.LoadingRendered += (_, _) =>
+        ClientLoopEvents.LoadingRendered += (_, _) =>
         {
             TextureBatcher.batcher.Start(_awaTexture);
             TextureBatcher.batcher.AddQuadScaled(20, 20, 200, 32, 0, 0, 16, 16, 2, TextureBatcher.colorWhite);

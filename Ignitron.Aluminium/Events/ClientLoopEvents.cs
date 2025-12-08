@@ -4,14 +4,14 @@ using OpenTK.Windowing.Desktop;
 namespace Ignitron.Aluminium.Events;
 
 /// <summary>
-/// Hooks for common game events (such as loading, rendering, ticking, etc.)
+/// Hooks for common client events (such as loading, rendering, ticking, etc.)
 /// </summary>
-public static partial class AllumeriaEvents
+public static partial class ClientLoopEvents
 {
     /// <summary>
     /// Invoked before the game starts loading
     /// </summary>
-    public static event Action<Game>? BeforeLoaded;
+    public static event Action<Game>? Loading;
 
     /// <summary>
     /// Invoked when the game has finished loading
@@ -21,7 +21,7 @@ public static partial class AllumeriaEvents
     /// <summary>
     /// Invoked before the game's <i>background thread</i> starts loading assets. You must <b>not</b> invoke rendering methods inside the callback.
     /// </summary>
-    public static event Action<Game>? BeforeLoadedThreaded;
+    public static event Action<Game>? LoadingThreaded;
 
     /// <summary>
     /// Invoked when the game's <i>background thread</i> has finished loading assets. You must <b>not</b> invoke rendering methods inside the callback.
@@ -36,7 +36,7 @@ public static partial class AllumeriaEvents
     /// <summary>
     /// Invoked before game events perform a tick
     /// </summary>
-    public static event Action<Game>? BeforeTicked;
+    public static event Action<Game>? Ticking;
 
     /// <summary>
     /// Invoked after the game has finished a tick
@@ -46,7 +46,7 @@ public static partial class AllumeriaEvents
     /// <summary>
     /// Invoked before the game updates a frame
     /// </summary>
-    public static event Action<Game, double>? BeforeUpdated;
+    public static event Action<Game, double>? Updating;
 
     /// <summary>
     /// Invoked every frame during loading screen
@@ -61,7 +61,7 @@ public static partial class AllumeriaEvents
     /// <summary>
     /// Invoked before the game renders a frame
     /// </summary>
-    public static event Action<Game, double>? BeforeRendered;
+    public static event Action<Game, double>? Rendering;
 
     /// <summary>
     /// Invoked every frame during loading screen

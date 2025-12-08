@@ -10,7 +10,7 @@ namespace Ignitron.Aluminium.Events;
 
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 [HarmonyPatch(typeof(Game))]
-public static partial class AllumeriaEvents
+public static partial class ClientLoopEvents
 {
     private static readonly FieldInfo GameThreadedLoadDone = AccessTools.DeclaredField(typeof(Game), nameof(Game.threadedLoadDone));
     private static readonly FieldInfo GameDeltaTime = AccessTools.DeclaredField(typeof(Game), nameof(Game.deltaTime));
@@ -19,7 +19,7 @@ public static partial class AllumeriaEvents
 
     [HarmonyPrefix]
     [HarmonyPatch("OnLoad")]
-    private static void ImplBeforeLoaded(Game __instance) => BeforeLoaded?.Invoke(__instance);
+    private static void ImplLoading(Game __instance) => Loading?.Invoke(__instance);
 
     [HarmonyPostfix]
     [HarmonyPatch("OnLoad")]
@@ -27,7 +27,7 @@ public static partial class AllumeriaEvents
 
     [HarmonyPrefix]
     [HarmonyPatch(nameof(Game.SetupGame))]
-    private static void ImplBeforeLoadedThreaded(Game __instance) => BeforeLoadedThreaded?.Invoke(__instance);
+    private static void ImplLoadingThreaded(Game __instance) => LoadingThreaded?.Invoke(__instance);
 
     [HarmonyPostfix]
     [HarmonyPatch(nameof(Game.SetupGame))]
@@ -48,7 +48,7 @@ public static partial class AllumeriaEvents
 
     [HarmonyPrefix]
     [HarmonyPatch(nameof(Game.OnTick))]
-    private static void ImplBeforeTicked(Game __instance) => BeforeTicked?.Invoke(__instance);
+    private static void ImplTicking(Game __instance) => Ticking?.Invoke(__instance);
 
     [HarmonyPostfix]
     [HarmonyPatch(nameof(Game.OnTick))]
@@ -56,7 +56,7 @@ public static partial class AllumeriaEvents
 
     [HarmonyTranspiler]
     [HarmonyPatch("OnUpdateFrame")]
-    private static IEnumerable<CodeInstruction> ImplBeforeUpdated(IEnumerable<CodeInstruction> instructions)
+    private static IEnumerable<CodeInstruction> ImplUpdating(IEnumerable<CodeInstruction> instructions)
     {
         return new CodeMatcher(instructions)
             .MatchStartForward(CodeMatch.Calls(() => default(Profiler)!.StartFrame()))
@@ -64,11 +64,11 @@ public static partial class AllumeriaEvents
             .InsertAfter(
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldsfld, GameDeltaTime),
-                CodeInstruction.Call(() => ImplBeforeUpdatedInvoke(default, default)))
+                CodeInstruction.Call(() => ImplUpdatingInvoke(default, default)))
             .Instructions();
     }
 
-    private static void ImplBeforeUpdatedInvoke(Game game, double time) => BeforeUpdated?.Invoke(game, time);
+    private static void ImplUpdatingInvoke(Game game, double time) => Updating?.Invoke(game, time);
 
     [HarmonyTranspiler]
     [HarmonyPatch("OnUpdateFrame")]
@@ -101,7 +101,7 @@ public static partial class AllumeriaEvents
 
     [HarmonyTranspiler]
     [HarmonyPatch("OnRenderFrame")]
-    private static IEnumerable<CodeInstruction> ImplBeforeRendered(IEnumerable<CodeInstruction> instructions)
+    private static IEnumerable<CodeInstruction> ImplRendering(IEnumerable<CodeInstruction> instructions)
     {
         return new CodeMatcher(instructions)
             .MatchStartForward(CodeMatch.Calls(() => GL.Clear(default)))
@@ -109,11 +109,11 @@ public static partial class AllumeriaEvents
             .InsertAfter(
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldsfld, GameDeltaTime),
-                CodeInstruction.Call(() => ImplBeforeRenderedInvoke(default, default)))
+                CodeInstruction.Call(() => ImplRenderingInvoke(default, default)))
             .Instructions();
     }
 
-    private static void ImplBeforeRenderedInvoke(Game game, double time) => BeforeRendered?.Invoke(game, time);
+    private static void ImplRenderingInvoke(Game game, double time) => Rendering?.Invoke(game, time);
 
     [HarmonyPostfix]
     [HarmonyPatch(nameof(Game.RenderLoadScreen))]
