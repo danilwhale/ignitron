@@ -56,5 +56,10 @@ public sealed class TestMod : IModEntrypoint
             TextureBatcher.batcher.Finalise();
             TextureBatcher.batcher.DrawBatch();
         };
+
+        WorldEvents.Loaded += (_, player) =>
+        {
+            Logger.Info($"loaded {player.uniqueCharID}");
+        };
     }
 }
