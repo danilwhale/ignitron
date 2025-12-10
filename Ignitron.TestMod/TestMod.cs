@@ -61,5 +61,10 @@ public sealed class TestMod : IModEntrypoint
         {
             Logger.Info($"loaded {player.uniqueCharID}");
         };
+
+        PlayerEvents.Spawned += (player) =>
+        {
+            Logger.Info($"double new player alert: {player.uniqueCharID}");
+        };
     }
 }
