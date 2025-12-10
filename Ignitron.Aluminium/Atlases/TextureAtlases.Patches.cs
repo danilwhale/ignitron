@@ -3,6 +3,7 @@ using HarmonyLib;
 
 namespace Ignitron.Aluminium.Atlases;
 
+[HarmonyPatch]
 public static partial class TextureAtlases
 {
     [HarmonyPostfix]
