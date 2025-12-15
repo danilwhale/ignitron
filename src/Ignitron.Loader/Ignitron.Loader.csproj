@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" />
+      <PackageReference Include="Lib.Harmony" Version="$(PackageVersion_Lib_Harmony)" />
     </ItemGroup>
 
     <ItemGroup>
