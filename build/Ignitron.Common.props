@@ -1,15 +1,13 @@
 <Project>
-    <Import Project="$(MSBuildThisFileDirectory)ValidateGameDirectory.targets"/>
+
+    <Import Project="$(MSBuildThisFileDirectory)helpers\Ignitron.Helpers.ValidateGameDirectory.targets"/>
 
     <ItemGroup>
         <!-- obvious reference -->
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'Allumeria.dll'))" Private="false"/>
 
         <!-- game dependencies -->
-        <!-- fastnoise -->
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'FastNoise.dll'))" Private="false"/>
-
-        <!-- opentk -->
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'OpenTK.Audio.OpenAL.dll'))" Private="false"/>
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'OpenTK.Compute.dll'))" Private="false"/>
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'OpenTK.Core.dll'))" Private="false"/>
@@ -19,17 +17,12 @@
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'OpenTK.Windowing.Common.dll'))" Private="false"/>
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'OpenTK.Windowing.Desktop.dll'))" Private="false"/>
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'OpenTK.Windowing.GraphicsLibraryFramework.dll'))" Private="false"/>
-
-        <!-- soloud -->
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'SoLoudLib.dll'))" Private="false"/>
-
-        <!-- sql -->
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'SQLitePCLRaw.batteries_v2.dll'))" Private="false"/>
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'SQLitePCLRaw.core.dll'))" Private="false"/>
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'SQLitePCLRaw.provider.e_sqlite3.dll'))" Private="false"/>
-
-        <!-- stb_image -->
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'StbImageSharp.dll'))" Private="false"/>
         <Reference Include="$([System.IO.Path]::Combine('$(GameDirectory)', 'StbImageWriteSharp.dll'))" Private="false"/>
     </ItemGroup>
+
 </Project>

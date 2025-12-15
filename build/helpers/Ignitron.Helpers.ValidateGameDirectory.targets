@@ -1,4 +1,5 @@
 <Project InitialTargets="ValidateGameDirectory">
+
     <Target Name="ValidateGameDirectory">
         <!-- validate GameDirectory property -->
         <Error
@@ -8,4 +9,5 @@
                 Text="Specified game directory doesn't exist: '$(GameDirectory)'!"
                 Condition="!Exists($(GameDirectory))"/>
     </Target>
+
 </Project>

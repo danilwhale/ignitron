@@ -16,13 +16,6 @@
       <ProjectReference Include="$(MSBuildThisFileDirectory)..\Ignitron.Aluminium\Ignitron.Aluminium.csproj" />
     </ItemGroup>
 
-    <Import Project="$(MSBuildThisFileDirectory)..\..\build\CommonAssemblies.props"/>
-
-    <Target Name="CopyBuildOutput" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Debug'">
-        <ItemGroup>
-            <BuildFiles Include="$(OutDir)\**\*.*"/>
-        </ItemGroup>
-        <Copy SourceFiles="@(BuildFiles)" DestinationFolder="$([System.IO.Path]::Combine('$(GameDirectory)', 'mods'))"/>
-    </Target>
+    <Import Project="$(MSBuildThisFileDirectory)..\..\build\Ignitron.Sdk.Foundation.targets"/>
 
 </Project>

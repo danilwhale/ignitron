@@ -1,28 +1,9 @@
-<Project>
-    <Import Project="$(MSBuildThisFileDirectory)CommonAssemblies.props"/>
+<Project InitialTargets="ModTargetsDeprecationNotice">
+
+    <Import Project="$(MSBuildThisFileDirectory)Ignitron.Sdk.Mod.targets"/>
     
-    <!-- copy Metadata.json into the output directory -->
-    <ItemGroup>
-        <Content Include="Metadata.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-
-    <!-- reference common stuff -->
-    <ItemGroup>
-        <ProjectReference Include="$(MSBuildThisFileDirectory)..\src\Ignitron.Loader\Ignitron.Loader.csproj" Private="false"/>
-        <ProjectReference Include="$(MSBuildThisFileDirectory)..\src\Ignitron.Aluminium\Ignitron.Aluminium.csproj" Private="false"/>
-    </ItemGroup>
-
-    <PropertyGroup>
-        <CopyToGameDirectory Condition="'$(CopyToGameDirectory)' == ''">false</CopyToGameDirectory>
-    </PropertyGroup>
-
-    <!-- copy mod directory into the Mods. requires 'CopyToGameDirectory' to be set to 'true' -->
-    <Target Name="CopyMod" AfterTargets="AfterBuild" Condition="$(CopyToGameDirectory)">
-        <ItemGroup>
-            <BuildFiles Include="$(OutDir)\**\*.*"/>
-        </ItemGroup>
-        <Copy SourceFiles="@(BuildFiles)" DestinationFolder="$([System.IO.Path]::Combine('$(GameDirectory)', 'mods', '$(MSBuildProjectName)', '%(RecursiveDir)'))"/>
+    <Target Name="ModTargetsDeprecationNotice">
+        <Warning Code="IGN0001" Text="'Mod.targets' has been deprecated. Change it to 'Ignitron.Sdk.Mod.targets'"/>
     </Target>
+
 </Project>

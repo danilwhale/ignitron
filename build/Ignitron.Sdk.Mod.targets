@@ -1,0 +1,36 @@
+<Project>
+
+    <Import Project="$(MSBuildThisFileDirectory)Ignitron.Sdk.Foundation.targets"/>
+
+    <!-- copy Metadata.json into the output directory -->
+    <ItemGroup>
+        <Content Include="Metadata.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="$(MSBuildThisFileDirectory)..\src\Ignitron.Loader\Ignitron.Loader.csproj" Private="false"/>
+        <ProjectReference Include="$(MSBuildThisFileDirectory)..\src\Ignitron.Aluminium\Ignitron.Aluminium.csproj" Private="false"/>
+    </ItemGroup>
+
+    <!-- 'DebugPack' and 'ReleasePack: -->
+    <!-- - these will pack the debug or release build in a .zip archive and name it in '<project_name>.zip' -->
+    <PropertyGroup>
+        <Configurations>$(Configurations);DebugPack;ReleasePack</Configurations>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(Configuration.EndsWith('Pack'))">
+        <PackPublishMod>true</PackPublishMod>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackPublishMod Condition="'$(PackPublishMod)' == ''">false</PackPublishMod>
+    </PropertyGroup>
+
+    <Target Name="PackMod" AfterTargets="Publish" Condition="$(PackPublishMod)">
+        <!-- TODO: this really should be in a PublishDir, but for some reason msbuild opens file handle for the zip file BEFORE it packs everything -->
+        <ZipDirectory SourceDirectory="$(PublishDir)" DestinationFile="$(OutDir)\$(MSBuildProjectName).zip" />
+    </Target>
+
+</Project>

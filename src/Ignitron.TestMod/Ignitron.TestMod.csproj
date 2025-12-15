@@ -5,15 +5,11 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-    
-    <PropertyGroup>
-        <CopyToGameDirectory Condition="'$(Configuration)' == 'Debug'">true</CopyToGameDirectory>
-    </PropertyGroup>
 
     <ItemGroup>
         <Content Include="res\**" CopyToOutputDirectory="PreserveNewest"/>
     </ItemGroup>
 
-    <Import Project="..\..\build\Mod.targets"/>
+    <Import Project="$(MSBuildThisFileDirectory)..\..\build\Mod.targets"/>
 
 </Project>

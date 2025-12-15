@@ -1,0 +1,27 @@
+<Project>
+
+    <Import Project="$(MSBuildThisFileDirectory)Ignitron.Common.props"/>
+
+    <!-- 'DebugTest' and 'ReleaseTest': -->
+    <!-- - these will copy the mod to the '<game directory>/mods'-->
+    <PropertyGroup>
+        <Configurations>$(Configurations);DebugTest;ReleaseTest</Configurations>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(Configuration.EndsWith('Test'))">
+        <CopyToGameDirectory>true</CopyToGameDirectory>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <CopyToGameDirectory Condition="'$(CopyToGameDirectory)' == ''">false</CopyToGameDirectory>
+    </PropertyGroup>
+
+    <!-- copy the mod directory into the '$(GameDirectory)/mods'. requires 'CopyToGameDirectory' to be set to 'true' -->
+    <Target Name="CopyMod" AfterTargets="AfterBuild" Condition="$(CopyToGameDirectory)">
+        <ItemGroup>
+            <BuildFiles Include="$(OutDir)\**\*.*"/>
+        </ItemGroup>
+        <Copy SourceFiles="@(BuildFiles)" DestinationFolder="$([System.IO.Path]::Combine('$(GameDirectory)', 'mods', '$(MSBuildProjectName)', '%(RecursiveDir)'))"/>
+    </Target>
+
+</Project>
