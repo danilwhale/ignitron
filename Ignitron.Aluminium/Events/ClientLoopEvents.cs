@@ -4,77 +4,77 @@ using OpenTK.Windowing.Desktop;
 namespace Ignitron.Aluminium.Events;
 
 /// <summary>
-/// Hooks for common client events (such as loading, rendering, ticking, etc.)
+/// Hooks for common <see cref="Game"/> events (such as loading, rendering, ticking, etc.)
 /// </summary>
 public static partial class ClientLoopEvents
 {
     /// <summary>
-    /// Invoked before the game starts loading
+    /// Occurs before the game starts loading
     /// </summary>
     public static event Action<Game>? Loading;
 
     /// <summary>
-    /// Invoked when the game has finished loading
+    /// Occurs when the game has finished loading
     /// </summary>
     public static event Action<Game>? Loaded;
 
     /// <summary>
-    /// Invoked before the game's <i>background thread</i> starts loading assets. You must <b>not</b> invoke rendering methods inside the callback.
+    /// Occurs before the game's <i>background thread</i> starts loading assets. You must <b>not</b> invoke rendering methods inside the callback.
     /// </summary>
     public static event Action<Game>? LoadingThreaded;
 
     /// <summary>
-    /// Invoked when the game's <i>background thread</i> has finished loading assets. You must <b>not</b> invoke rendering methods inside the callback.
+    /// Occurs when the game's <i>background thread</i> has finished loading assets. You must <b>not</b> invoke rendering methods inside the callback.
     /// </summary>
     public static event Action<Game>? LoadedThreaded;
 
     /// <summary>
-    /// Invoked when the game finishes loading assets and components
+    /// Occurs when the game finishes loading assets and components
     /// </summary>
     public static event Action<Game>? LoadedEverything;
 
     /// <summary>
-    /// Invoked before game events perform a tick
+    /// Occurs before game events perform a tick
     /// </summary>
     public static event Action<Game>? Ticking;
 
     /// <summary>
-    /// Invoked after the game has finished a tick
+    /// Occurs after the game has finished a tick
     /// </summary>
     public static event Action<Game>? Ticked;
 
     /// <summary>
-    /// Invoked before the game updates a frame
+    /// Occurs before the game updates a frame
     /// </summary>
     public static event Action<Game, double>? Updating;
 
     /// <summary>
-    /// Invoked every frame during loading screen
+    /// Occurs every frame during loading screen
     /// </summary>
     public static event Action<Game, double>? LoadingUpdated;
 
     /// <summary>
-    /// Invoked after the game has finished updating a frame
+    /// Occurs after the game has finished updating a frame
     /// </summary>
     public static event Action<Game, double>? Updated;
 
     /// <summary>
-    /// Invoked before the game renders a frame
+    /// Occurs before the game renders a frame
     /// </summary>
     public static event Action<Game, double>? Rendering;
 
     /// <summary>
-    /// Invoked every frame during loading screen
+    /// Occurs every frame during loading screen
     /// </summary>
     public static event Action<Game, double>? LoadingRendered;
 
     /// <summary>
-    /// Invoked after the game has just finished rendering a frame, but before <see cref="GameWindow.SwapBuffers"/>
+    /// Occurs after the game has just finished rendering a frame, but before <see cref="GameWindow.SwapBuffers"/>
     /// </summary>
     public static event Action<Game, double>? Rendered;
 
     /// <summary>
-    /// Invoked before the game starts unloading content. Great place to unload your previously loaded assets
+    /// Occurs before the game starts unloading content. Great place to unload your previously loaded assets
     /// </summary>
     public static event Action<Game>? Unloaded;
 }
