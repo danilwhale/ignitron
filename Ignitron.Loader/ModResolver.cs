@@ -19,6 +19,7 @@ internal sealed class ModResolver(IgnitronLoader loader)
         StoreMod(new ModBox(new AllumeriaModMetadata(), loader.GamePath));
         StoreMod(new ModBox(new IgnitronModMetadata(), loader.ModsPath));
         StoreMod(new ModBox(new HarmonyModMetadata(), loader.ModsPath));
+        StoreMod(new ModBox(new AluminiumModMetadata(), loader.ModsPath));
 
         try
         {

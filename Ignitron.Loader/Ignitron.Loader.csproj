@@ -9,7 +9,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Lib.Harmony" Version="2.4.1" />
+      <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Ignitron.Aluminium\Ignitron.Aluminium.csproj" />
     </ItemGroup>
 
     <Import Project="$(MSBuildThisFileDirectory)..\build\CommonAssemblies.props"/>

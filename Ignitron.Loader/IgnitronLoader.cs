@@ -7,6 +7,7 @@ using System.Runtime.Loader;
 using System.Text.RegularExpressions;
 using Allumeria;
 using HarmonyLib;
+using Ignitron.Aluminium;
 
 namespace Ignitron.Loader;
 
@@ -114,6 +115,7 @@ public sealed partial class IgnitronLoader : IExternalLoader
             ModsPath = Path.Join(GamePath, "mods");
 
             _mods = new ModResolver(this).Resolve(ModsPath);
+            AluminiumLibrary.Initialise();
             InitialiseMods();
 
             Logger.Init("Loaded mod(s):");
