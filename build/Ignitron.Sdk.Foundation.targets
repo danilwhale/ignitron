@@ -1,6 +1,6 @@
 <Project>
 
-    <Import Project="$(MSBuildThisFileDirectory)Ignitron.Common.props"/>
+    <Import Project="$(MSBuildThisFileDirectory)Ignitron.Common.References.props"/>
 
     <!-- 'DebugTest' and 'ReleaseTest': -->
     <!-- - these will copy the mod to the '<game directory>/mods'-->
