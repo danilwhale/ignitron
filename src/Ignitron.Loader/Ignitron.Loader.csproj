@@ -13,10 +13,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Ignitron.Aluminium\Ignitron.Aluminium.csproj" />
+      <ProjectReference Include="$(MSBuildThisFileDirectory)..\Ignitron.Aluminium\Ignitron.Aluminium.csproj" />
     </ItemGroup>
 
-    <Import Project="$(MSBuildThisFileDirectory)..\build\CommonAssemblies.props"/>
+    <Import Project="$(MSBuildThisFileDirectory)..\..\build\CommonAssemblies.props"/>
 
     <Target Name="CopyBuildOutput" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Debug'">
         <ItemGroup>

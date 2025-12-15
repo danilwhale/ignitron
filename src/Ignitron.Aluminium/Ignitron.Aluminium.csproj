@@ -11,7 +11,7 @@
         <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" />
     </ItemGroup>
 
-    <Import Project="$(MSBuildThisFileDirectory)..\build\CommonAssemblies.props"/>
+    <Import Project="$(MSBuildThisFileDirectory)..\..\build\CommonAssemblies.props"/>
     
     <ItemGroup>
         <InternalsVisibleTo Include="Loader"/>
