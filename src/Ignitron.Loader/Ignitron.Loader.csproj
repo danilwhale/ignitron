@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <AssemblyName>Loader</AssemblyName>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
