@@ -3,7 +3,7 @@
 > [!NOTE]
 > if you're feeling to target 'retro' versions (before 0.10), you should read [ancient readme guide](https://github.com/danilwhale/ignitron/blob/7a70196e36a65ebd7c7378ba54ad2c6dd738d1f3/README.md) for now until i write it a separate guide later
 
-## prerequesits
+## prerequsites
 
 1. [.NET SDK 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 2. Allumeria 0.10 or above
