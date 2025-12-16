@@ -9,7 +9,7 @@
 2. Allumeria 0.10 or above
 3. reading comprehension
 
-## adding the game to `PATH`
+## adding the game to an environment variable
 
 obviously, you need to find the game directory first.
 you can find guide on this in [the 'finding the game directory' section of the player installation guide](../player/install.md#finding-the-game-directory)
