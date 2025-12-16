@@ -15,5 +15,5 @@ internal sealed class JsonV2ModMetadata : IModMetadata
     [JsonPropertyName("description")] public string? Description { get; set; }
     [JsonPropertyName("version")] [JsonRequired] public Version Version { get; set; } = null!;
     [JsonIgnore] public IEnumerable<IModDependency> Dependencies => _dependencies;
-    [JsonPropertyName("entrypoints")] public IEnumerable<string>? Entrypoints { get; set; }
+    [JsonPropertyName("entrypoints")] public IEnumerable<string> Entrypoints { get; set; } = null!;
 }

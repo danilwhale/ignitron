@@ -14,7 +14,7 @@ internal static class MainMenuPatches
             return new CodeMatcher(instructions)
                 .MatchStartForward(CodeMatch.Calls(() => string.Concat(null, null, null)))
                 .ThrowIfInvalid("couldn't find string.Concat(string, string, string)")
-                .InsertAfter(CodeInstruction.Call(() => AppendModCount(null)))
+                .InsertAfter(CodeInstruction.Call(() => AppendModCount(null!)))
                 .Instructions();
         }
 

@@ -15,7 +15,7 @@ internal sealed class ModAssemblyLoadContext(ModBox mod) : AssemblyLoadContext, 
         // if we do, everything is FUCKED
         foreach (Assembly ass in AppDomain.CurrentDomain.GetAssemblies())
         {
-            if (ass.FullName.Equals(assemblyName.FullName, StringComparison.Ordinal))
+            if (ass.FullName != null && ass.FullName.Equals(assemblyName.FullName, StringComparison.Ordinal))
             {
                 return ass;
             }

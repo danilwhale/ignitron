@@ -23,7 +23,7 @@ public sealed class AssetManager : IDisposable
 
     private readonly Dictionary<AssetKey, object> _assets = [];
     private ZipArchive? _archive;
-    private string _rootPath;
+    private string _rootPath = null!;
 
     /// <summary>
     /// Gets a value that indicates whether the <see cref="AssetManager"/> is wrapped around an archive file
