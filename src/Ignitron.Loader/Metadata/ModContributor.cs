@@ -7,6 +7,9 @@ namespace Ignitron.Loader.Metadata;
 /// <param name="role">Role of a mod contributor</param>
 public readonly struct ModContributor(string name, string? role) : IModContributor
 {
+    /// <inheritdoc />
     public string Name { get; } = name;
+
+    /// <inheritdoc />
     public string? Role { get; } = role;
 }

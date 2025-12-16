@@ -8,7 +8,12 @@ namespace Ignitron.Loader.Metadata;
 /// <param name="type">Type of dependency</param>
 public sealed class ModDependency(string id, WildcardVersion version, ModDependencyType type) : IModDependency
 {
+    /// <inheritdoc />
     public string Id { get; } = id;
+
+    /// <inheritdoc />
     public WildcardVersion Version { get; } = version;
+
+    /// <inheritdoc />
     public ModDependencyType Type { get; } = type;
 }

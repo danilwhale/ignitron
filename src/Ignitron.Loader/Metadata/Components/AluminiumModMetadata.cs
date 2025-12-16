@@ -2,7 +2,7 @@ using Ignitron.Aluminium;
 
 namespace Ignitron.Loader.Metadata.Components;
 
-public sealed class AluminiumModMetadata : IModMetadata
+internal sealed class AluminiumModMetadata : IModMetadata
 {
     public string AssemblyRelativePath => "Ignitron.Aluminium.dll";
     public string Id => "aluminium";

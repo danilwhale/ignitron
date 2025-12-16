@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Ignitron.Loader.Metadata;
 
-public sealed class WildcardVersionJsonConverter : JsonConverter<WildcardVersion>
+internal sealed class WildcardVersionJsonConverter : JsonConverter<WildcardVersion>
 {
     public override WildcardVersion Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
