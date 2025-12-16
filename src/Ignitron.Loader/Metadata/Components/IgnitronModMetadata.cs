@@ -8,6 +8,8 @@ internal sealed class IgnitronModMetadata : IModMetadata
     public IEnumerable<IModContributor> Contributors { get; } = [new ModContributor("danilwhale", "developer")];
     public string? Description => "A mod loader for Allumeria";
     public Version Version => IgnitronLoader.Version;
-    public IEnumerable<IModDependency> Dependencies { get; } = [];
+    public IEnumerable<IModDependency> Dependencies { get; } = [
+        new ModDependency("allumeria", new WildcardVersion(major: 0, minor: 11), ModDependencyType.Mandatory),
+        new ModDependency("harmony", new WildcardVersion(major: 2), ModDependencyType.Mandatory)];
     public IEnumerable<string> Entrypoints { get; } = [];
 }
