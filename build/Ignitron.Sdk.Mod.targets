@@ -2,6 +2,10 @@
 
     <Import Project="$(MSBuildThisFileDirectory)Ignitron.Sdk.Foundation.targets"/>
 
+    <PropertyGroup>
+        <GameOutputDirectory>$(AssemblyName)</GameOutputDirectory>
+    </PropertyGroup>
+
     <!-- copy Metadata.json into the output directory -->
     <ItemGroup>
         <Content Include="Metadata.json">

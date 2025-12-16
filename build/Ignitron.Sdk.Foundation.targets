@@ -16,12 +16,15 @@
         <CopyToGameDirectory Condition="'$(CopyToGameDirectory)' == ''">false</CopyToGameDirectory>
     </PropertyGroup>
 
-    <!-- copy the mod directory into the '$(GameDirectory)/mods'. requires 'CopyToGameDirectory' to be set to 'true' -->
-    <Target Name="CopyMod" AfterTargets="AfterBuild" Condition="$(CopyToGameDirectory)">
+    <!-- copy the output directory contents to the '$(GameDirectory)/$(GameOutputDirectory)'. requires 'CopyToGameDirectory' to be set to 'true' -->
+    <Target Name="CopyOutputDirToGame" AfterTargets="AfterBuild" Condition="$(CopyToGameDirectory)">
         <ItemGroup>
             <BuildFiles Include="$(OutDir)\**\*.*"/>
         </ItemGroup>
-        <Copy SourceFiles="@(BuildFiles)" DestinationFolder="$([System.IO.Path]::Combine('$(GameDirectory)', 'mods', '$(MSBuildProjectName)', '%(RecursiveDir)'))"/>
+
+        <Copy
+                SourceFiles="@(BuildFiles)"
+                DestinationFolder="$([System.IO.Path]::Combine('$(GameDirectory)', 'mods', '$(GameOutputDirectory)', '%(RecursiveDir)'))"/>
     </Target>
 
 </Project>
