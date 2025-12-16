@@ -30,7 +30,7 @@ internal static class TranslationPatches
             .Advance(3)
             .Insert(
                 new CodeInstruction(OpCodes.Dup),
-                CodeInstruction.Call(() => LoadTranslations(null)))
+                CodeInstruction.Call(() => LoadTranslations(null!)))
             // and now we need to translate strings
             .MatchStartForward(
                 // if (!Translator.logMissing) {

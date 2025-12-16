@@ -35,7 +35,7 @@ public sealed class StructureAssetProvider : IAssetProvider<Structure>
 
         if (paletteTag != null)
         {
-            GetStructurePalette(structure).ReadBytes(paletteTag, null, readStrings: true);
+            GetStructurePalette(structure).ReadBytes(paletteTag, null!, readStrings: true);
         }
 
         // ReSharper disable PossibleInvalidCastExceptionInForeachLoop

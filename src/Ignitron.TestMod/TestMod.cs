@@ -16,7 +16,7 @@ namespace Ignitron.TestMod;
 
 public sealed class TestMod : IModEntrypoint
 {
-    private static Texture _awaTexture;
+    private static Texture _awaTexture = null!;
 
     public void Main(ModBox box)
     {
