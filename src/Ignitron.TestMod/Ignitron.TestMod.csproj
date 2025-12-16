@@ -10,6 +10,6 @@
         <Content Include="res\**" CopyToOutputDirectory="PreserveNewest"/>
     </ItemGroup>
 
-    <Import Project="$(MSBuildThisFileDirectory)..\..\build\Mod.targets"/>
+    <Import Project="..\..\build\Ignitron.Sdk.Mod.targets"/>
 
 </Project>
