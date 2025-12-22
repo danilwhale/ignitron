@@ -19,12 +19,12 @@ public static partial class ClientLoopEvents
     public static event Action<Game>? Loaded;
 
     /// <summary>
-    /// Occurs before the game's <i>background thread</i> starts loading assets. You must <b>not</b> invoke rendering methods inside the callback.
+    /// Occurs before the game's <i>background thread</i> starts loading content. You must <b>not</b> invoke rendering methods inside the callback.
     /// </summary>
     public static event Action<Game>? LoadingThreaded;
 
     /// <summary>
-    /// Occurs when the game's <i>background thread</i> has finished loading assets. You must <b>not</b> invoke rendering methods inside the callback.
+    /// Occurs when the game's <i>background thread</i> has finished loading content. You must <b>not</b> invoke rendering methods inside the callback.
     /// </summary>
     public static event Action<Game>? LoadedThreaded;
 
